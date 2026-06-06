@@ -1,507 +1,745 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibraNoctis | Immersive Book Discovery</title>
+    <style>
+        /* --- GLOBAL STYLES & DARK AESTHETIC --- */
+        :root {
+            --bg-dark: #0a090d;
+            --card-bg: rgba(25, 22, 31, 0.85);
+            --accent-purple: #6d4aff;
+            --accent-glow: #9d4edd;
+            --text-main: #f3f0f7;
+            --text-muted: #a39cb4;
+        }
 
-<title>BookRealm</title>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
 
-<style>
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background 1s ease, background-image 1s ease;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
-}
+        /* Background Visual Effects Layer */
+        #ambient-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.6;
+        }
 
-body{
-background:#0f1117;
-color:white;
-min-height:100vh;
-transition:1s;
-}
+        header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: rgba(10, 9, 13, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-header{
-text-align:center;
-padding:60px;
-background:linear-gradient(180deg,#111827,#0f1117);
-}
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #fff, var(--accent-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
 
-header h1{
-font-size:4rem;
-letter-spacing:5px;
-font-family:Cinzel,serif;
-}
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
 
-header p{
-opacity:.8;
-margin-top:10px;
-}
+        .hidden { display: none !important; }
 
-.container{
-max-width:1200px;
-margin:auto;
-padding:40px;
-}
+        /* --- HOMEPAGE & QUIZ FORM --- */
+        .hero {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 1rem; color: #fff; }
+        .hero p { color: var(--text-muted); font-size: 1.2rem; }
 
-.form-box{
-background:#1a1d29;
-padding:30px;
-border-radius:20px;
-margin-bottom:40px;
-}
+        .quiz-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(109, 74, 255, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            max-width: 650px;
+            margin: 0 auto;
+        }
 
-input,select{
-width:100%;
-padding:12px;
-margin-top:10px;
-margin-bottom:20px;
-background:#2a2d3c;
-border:none;
-color:white;
-border-radius:10px;
-}
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
 
-button{
-padding:12px 25px;
-background:#7c3aed;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-}
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
 
-button:hover{
-background:#8b5cf6;
-}
+        input[type="text"], select {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
 
-.hidden{
-display:none;
-}
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(109, 74, 255, 0.3);
+        }
 
-.book-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
+        .btn {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-glow));
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s transform, 0.3s box-shadow;
+            width: 100%;
+        }
 
-.book{
-background:#1a1d29;
-padding:20px;
-border-radius:20px;
-cursor:pointer;
-transition:.3s;
-}
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(109, 74, 255, 0.4);
+        }
 
-.book:hover{
-transform:translateY(-5px);
-}
+        /* --- RECOMMENDATIONS PAGE --- */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
 
-.book img{
-width:100%;
-height:350px;
-object-fit:cover;
-border-radius:10px;
-}
+        .book-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
 
-.book h3{
-margin-top:15px;
-}
+        .book-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-purple);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
 
-#details{
-padding:40px;
-}
+        .book-cover {
+            height: 320px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
 
-.rating{
-font-size:2rem;
-cursor:pointer;
-}
+        .book-info {
+            padding: 1rem;
+        }
 
-.star{
-opacity:.3;
-}
+        .book-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
+        .book-author { color: var(--text-muted); font-size: 0.9rem; }
 
-.active{
-opacity:1;
-}
+        /* --- IMMERSIVE BOOK DETAIL VIEW --- */
+        .book-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            background: rgba(10, 9, 13, 0.75);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 1rem;
+        }
 
-.comment-box{
-margin-top:30px;
-}
+        @media (max-width: 768px) {
+            .book-detail-container { grid-template-columns: 1fr; }
+        }
 
-.comment{
-background:#1a1d29;
-padding:10px;
-border-radius:10px;
-margin-top:10px;
-}
+        .sticky-side {
+            position: relative;
+        }
 
-.ai-chat{
-position:fixed;
-right:20px;
-bottom:20px;
-width:320px;
-background:#1a1d29;
-border-radius:20px;
-overflow:hidden;
-}
+        .big-cover {
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 1.5rem;
+        }
 
-.ai-header{
-background:#7c3aed;
-padding:15px;
-font-weight:bold;
-}
+        /* Interaction Panel */
+        .shelf-panel {
+            background: rgba(255,255,255,0.05);
+            padding: 1.2rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
 
-.chat-messages{
-height:250px;
-overflow-y:auto;
-padding:15px;
-}
+        .shelf-select {
+            margin-bottom: 1rem;
+        }
 
-.bot{
-margin-bottom:15px;
-}
+        .stars {
+            display: flex;
+            gap: 0.3rem;
+            font-size: 1.5rem;
+            color: #444;
+            cursor: pointer;
+        }
 
-.chat-input{
-display:flex;
-}
+        .stars span.active { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
 
-.chat-input input{
-margin:0;
-border-radius:0;
-}
+        .synopsis { font-size: 1.1rem; line-height: 1.6; color: #e1dde6; margin-bottom: 2rem; }
+        
+        /* Media Sections (Spotify & Fanart) */
+        .media-section {
+            margin-top: 2rem;
+        }
+        .media-section h3 { margin-bottom: 1rem; font-size: 1.3rem; border-left: 4px solid var(--accent-purple); padding-left: 0.5rem;}
 
-.chat-input button{
-border-radius:0;
-}
+        .fanart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
 
-.fourthwing{
-background:
-linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-url("https://images.unsplash.com/photo-1518709268805-4e9042af2176");
-background-size:cover;
-background-attachment:fixed;
-}
+        .fanart-card {
+            background: #111;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
 
-.acotar{
-background:
-linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-url("https://images.unsplash.com/photo-1511497584788-876760111969");
-background-size:cover;
-background-attachment:fixed;
-}
+        .fanart-img {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
 
-.tog{
-background:
-linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
-url("https://images.unsplash.com/photo-1518562180175-34a163b1a9a6");
-background-size:cover;
-background-attachment:fixed;
-}
+        .fanart-caption {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
 
-iframe{
-width:100%;
-height:400px;
-border:none;
-margin-top:20px;
-border-radius:20px;
-}
+        /* Comments Section */
+        .comments-section { margin-top: 3rem; }
+        .comment-input-area { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .comment-input-area textarea {
+            flex: 1;
+            padding: 0.8rem;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 8px;
+            resize: none;
+            height: 60px;
+        }
+        .comment-list { display: flex; flex-direction: column; gap: 1rem; }
+        .comment {
+            background: rgba(255,255,255,0.03);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-glow);
+        }
+        .comment-author { font-weight: bold; font-size: 0.9rem; margin-bottom: 0.3rem; color: var(--accent-glow); }
 
-.fanart{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:15px;
-margin-top:20px;
-}
+        /* --- AI ASSISTANT PANEL --- */
+        .ai-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #8a2be2, #4a00e0);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.5);
+            z-index: 1000;
+            font-size: 1.5rem;
+        }
 
-.fanart img{
-width:100%;
-height:250px;
-object-fit:cover;
-border-radius:15px;
-}
+        .ai-chatbox {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            width: 350px;
+            height: 450px;
+            background: #121016;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-</style>
+        .ai-chat-header {
+            background: linear-gradient(135deg, #1b1429, #0a090d);
+            padding: 1rem;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .ai-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .msg { padding: 0.6rem 0.9rem; border-radius: 8px; max-width: 85%; font-size: 0.9rem; line-height: 1.4; }
+        .msg.user { background: var(--accent-purple); align-self: flex-end; color: white; }
+        .msg.ai { background: rgba(255,255,255,0.06); align-self: flex-start; border-left: 2px solid var(--accent-glow); }
+
+        .ai-input-area {
+            display: flex;
+            padding: 0.8rem;
+            background: rgba(0,0,0,0.4);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .ai-input-area input { flex: 1; background: transparent; border: none; color: white; outline: none; padding-right: 0.5rem; }
+
+        /* CSS-driven Animation Effect for Fourth Wing background */
+        @keyframes drift-dragons {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .dragon-theme-active {
+            animation: drift-dragons 30s infinite linear;
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-
-<h1>BOOKREALM</h1>
-
-<p>Discover your next obsession.</p>
-
-</header>
-
-<div class="container">
-
-<div class="form-box">
-
-<h2>Personalized Recommendations</h2>
-
-<select id="genre">
-<option>Fantasy</option>
-<option>Romance</option>
-<option>Mystery</option>
-<option>Dystopian</option>
-</select>
-
-<input id="author" placeholder="Favourite author">
-
-<input id="books" placeholder="Books you loved">
-
-<button onclick="recommend()">
-Find My Books
-</button>
-
-</div>
-
-<div id="recommendations" class="hidden">
-
-<h2>Recommended For You</h2>
-
-<br>
-
-<div class="book-grid">
-
-<div class="book" onclick="openBook('fourthwing')">
-
-<img src="https://images.unsplash.com/photo-1512820790803-83ca734da794">
-
-<h3>Fourth Wing</h3>
-
-</div>
-
-<div class="book" onclick="openBook('acotar')">
-
-<img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f">
-
-<h3>A Court of Thorns and Roses</h3>
-
-</div>
-
-<div class="book" onclick="openBook('tog')">
-
-<img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d">
-
-<h3>Throne of Glass</h3>
-
-</div>
-
-</div>
-
-</div>
-
-<div id="details" class="hidden">
-
-<h1 id="title"></h1>
-
-<br>
-
-<p id="synopsis"></p>
-
-<br>
-
-<h2>Reader Status</h2>
-
-<br>
-
-<button>Want To Read</button>
-<button>Finished</button>
-<button>DNF</button>
-
-<br><br>
-
-<h2>Rate This Book</h2>
-
-<div class="rating">
-
-<span class="star" onclick="rate(1)">★</span>
-<span class="star" onclick="rate(2)">★</span>
-<span class="star" onclick="rate(3)">★</span>
-<span class="star" onclick="rate(4)">★</span>
-<span class="star" onclick="rate(5)">★</span>
-
-</div>
-
-<br>
-
-<h2>Book Inspired Playlist</h2>
-
-<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUsuxWHRQd"></iframe>
-
-<h2>Fan Art</h2>
-
-<div class="fanart">
-
-<img src="https://images.unsplash.com/photo-1518562180175-34a163b1a9a6">
-<img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176">
-<img src="https://images.unsplash.com/photo-1511497584788-876760111969">
-
-</div>
-
-<div class="comment-box">
-
-<h2>Comments</h2>
-
-<input id="commentInput" placeholder="Leave a comment">
-
-<button onclick="addComment()">
-Post
-</button>
-
-<div id="comments"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="ai-chat">
-
-<div class="ai-header">
-AI Librarian
-</div>
-
-<div id="chat" class="chat-messages">
-
-<div class="bot">
-Hello reader. Tell me what you enjoy reading.
-</div>
-
-</div>
-
-<div class="chat-input">
-
-<input id="chatInput">
-
-<button onclick="sendMessage()">Send</button>
-
-</div>
-
-</div>
-
-<script>
-
-const books = {
-
-fourthwing:{
-title:"Fourth Wing",
-synopsis:"A brutal dragon rider academy where survival is never guaranteed."
-},
-
-acotar:{
-title:"A Court of Thorns and Roses",
-synopsis:"A huntress enters a magical world ruled by fae."
-},
-
-tog:{
-title:"Throne of Glass",
-synopsis:"An assassin fights for freedom and discovers her destiny."
-}
-
-};
-
-function recommend(){
-document
-.getElementById("recommendations")
-.classList.remove("hidden");
-}
-
-function openBook(id){
-
-document.body.className=id;
-
-document
-.getElementById("details")
-.classList.remove("hidden");
-
-document
-.getElementById("title")
-.innerText=books[id].title;
-
-document
-.getElementById("synopsis")
-.innerText=books[id].synopsis;
-}
-
-function rate(num){
-
-let stars =
-document.querySelectorAll(".star");
-
-stars.forEach((star,index)=>{
-
-if(index<num)
-star.classList.add("active");
-else
-star.classList.remove("active");
-
-});
-}
-
-function addComment(){
-
-let text =
-document.getElementById("commentInput").value;
-
-if(text==="") return;
-
-let div =
-document.createElement("div");
-
-div.className="comment";
-
-div.innerText=text;
-
-document
-.getElementById("comments")
-.appendChild(div);
-
-document
-.getElementById("commentInput")
-.value="";
-}
-
-function sendMessage(){
-
-let input =
-document.getElementById("chatInput");
-
-let message =
-input.value.toLowerCase();
-
-let response =
-"Try Fourth Wing.";
-
-if(message.includes("dragon"))
-response="You should read Fourth Wing.";
-
-if(message.includes("fae"))
-response="You should read ACOTAR.";
-
-if(message.includes("assassin"))
-response="You should read Throne of Glass.";
-
-let chat =
-document.getElementById("chat");
-
-chat.innerHTML +=
-`<div>You: ${input.value}</div>`;
-
-chat.innerHTML +=
-`<div class="bot">${response}</div>`;
-
-input.value="";
-
-chat.scrollTop=
-chat.scrollHeight;
-}
-
-</script>
-
+    <header>
+        <div class="logo" onclick="showPage('home')">LIBRA NOCTIS</div>
+        <div style="color: var(--text-muted); font-size: 0.9rem; cursor: pointer;" onclick="showPage('home')">🔮 Reset Discovery</div>
+    </header>
+
+    <div id="ambient-effect"></div>
+
+    <div class="container">
+        
+        <section id="page-home">
+            <div class="hero">
+                <h1>Find Your Next Obsession</h1>
+                <p>Step out of algorithms. Step into a tailored reading mood.</p>
+            </div>
+
+            <div class="quiz-card">
+                <form id="discovery-form" onsubmit="handleQuizSubmit(event)">
+                    <div class="form-group">
+                        <label for="fav-books">Books You've Loved (Separated by commas)</label>
+                        <input type="text" id="fav-books" placeholder="e.g., A Court of Thorns and Roses, Dune" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fav-authors">Authors You Always Auto-Buy</label>
+                        <input type="text" id="fav-authors" placeholder="e.g., Rebecca Yarros, Sarah J. Maas">
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">Choose Your Main Target Genre</label>
+                        <select id="genre">
+                            <option value="Fantasy">Romantasy / High Fantasy</option>
+                            <option value="Sci-Fi">Dark Sci-Fi / Space Opera</option>
+                            <option value="Gothic">Gothic Horror / Thriller</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vibe">What's the exact vibe you need?</label>
+                        <select id="vibe">
+                            <option value="enemies">Enemies to Lovers & High Stakes</option>
+                            <option value="cosmic">Mind-bending & Vast Worlds</option>
+                            <option value="haunted">Shadowy, Atmospheric & Mysterious</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Generate Personalized Library</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="page-results" class="hidden">
+            <div class="hero" style="margin: 2rem 0;">
+                <h2>Your Tailored Grimoire</h2>
+                <p>Based on your cosmic preferences, we've summoned these reads.</p>
+            </div>
+            <div class="results-grid" id="results-grid">
+                </div>
+        </section>
+
+        <section id="page-detail" class="hidden">
+            <button class="btn" style="width: auto; margin-bottom: 1.5rem; background: rgba(255,255,255,0.1);" onclick="showPage('results')">← Back to Recommendations</button>
+            
+            <div class="book-detail-container" id="detail-container">
+                <div class="sticky-side">
+                    <div class="big-cover" id="detail-cover"></div>
+                    
+                    <div class="shelf-panel">
+                        <div class="shelf-select">
+                            <label for="reading-status">Reading Status</label>
+                            <select id="reading-status" onchange="updateShelfStatus(this.value)">
+                                <option value="none">Select Option...</option>
+                                <option value="want">Want to Read</option>
+                                <option value="reading">Currently Reading</option>
+                                <option value="dnf">Did Not Finish (DNF)</option>
+                                <option value="finished">Finished</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Your Rating</label>
+                            <div class="stars" id="star-rating">
+                                <span onclick="rateBook(1)">★</span>
+                                <span onclick="rateBook(2)">★</span>
+                                <span onclick="rateBook(3)">★</span>
+                                <span onclick="rateBook(4)">★</span>
+                                <span onclick="rateBook(5)">★</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h1 id="detail-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;"></h1>
+                    <h3 id="detail-author" style="color: var(--accent-glow); margin-bottom: 1.5rem; font-weight: 500;"></h3>
+                    
+                    <p class="synopsis" id="detail-synopsis"></p>
+
+                    <div class="media-section">
+                        <h3>Official/Inspired Playlist</h3>
+                        <div id="playlist-embed">
+                            </div>
+                    </div>
+
+                    <div class="media-section">
+                        <h3>Character Fanart Community Hub</h3>
+                        <div class="fanart-grid" id="fanart-gallery">
+                            </div>
+                    </div>
+
+                    <div class="comments-section">
+                        <h3>Reader Discussion</h3>
+                        <div class="comment-input-area">
+                            <textarea id="new-comment-text" placeholder="Share your thoughts or theories (spoilers welcome with warning)..."></textarea>
+                            <button class="btn" style="width: auto; height: 60px;" onclick="addComment()">Post</button>
+                        </div>
+                        <div class="comment-list" id="comments-list">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="ai-toggle" onclick="toggleAIChat()">✨</div>
+    <div class="ai-chatbox hidden" id="ai-chatbox">
+        <div class="ai-chat-header">
+            <span>Noctis AI Companion</span>
+            <span style="cursor:pointer;" onclick="toggleAIChat()">✕</span>
+        </div>
+        <div class="ai-messages" id="ai-messages">
+            <div class="msg ai">Greetings, seeker. Tell me what kind of emotional damage or grand journey you are hunting for today, and I shall unveil it.</div>
+        </div>
+        <div class="ai-input-area">
+            <input type="text" id="ai-input" placeholder="Ask AI (e.g. 'fantasy with assassin FMC')..." onkeypress="if(event.key === 'Enter') handleAISubmit()">
+            <button onclick="handleAISubmit()" style="background:none; border:none; color:var(--accent-glow); cursor:pointer; font-weight:bold;">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Mock Database of Books mapping to results
+        const mockDatabase = {
+            "Fantasy-enemies": [
+                {
+                    id: "fourthwing",
+                    title: "Fourth Wing",
+                    author: "Rebecca Yarros",
+                    synopsis: "Enter the brutal world of a military college for dragon riders, where the only rule is: graduate or die. Violet Sorrengail was supposed to live a quiet life among books, but now she must survive deadly trials, ruthless peers, and Xaden Riorson—the powerful and dangerous wingleader who wants her dead.",
+                    cover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400", // Placeholder artistic texture
+                    ambientBg: "url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1600')", // Would be realistic dragon overlay
+                    themeClass: "dragon-theme-active",
+                    spotifyId: "37i9dQZF1DX8Uebhn9wzrS", // Example playlist ID
+                    fmcArt: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300", 
+                    mmcArt: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300",
+                    comments: ["Xaden is literally perfection.", "That ending left me absolutely speechless!!"]
+                },
+                {
+                    id: "acotar",
+                    title: "A Court of Thorns and Roses",
+                    author: "Sarah J. Maas",
+                    synopsis: "Feyre's survival rests upon her ability to hunt and kill in a bitter, snowy forest. When she kills a wolf, a terrifying creature arrives to demand retribution. Dragged to a treacherous magical land she only knows about from legends, Feyre discovers her captor is an immortal faerie.",
+                    cover: "https://images.unsplash.com/photo-1500964757637-c85e8a162699?auto=format&fit=crop&q=80&w=400",
+                    ambientBg: "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1500964757637-c85e8a162699?auto=format&fit=crop&q=80&w=1600')",
+                    themeClass: "fae-theme",
+                    spotifyId: "37i9dQZF1DX4sWSpwq3LiO",
+                    fmcArt: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=300",
+                    mmcArt: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300",
+                    comments: ["Wait till you get to book 2!", "Rhysand is the blueprint."]
+                }
+            ],
+            "Sci-Fi-cosmic": [
+                {
+                    id: "dune",
+                    title: "Dune",
+                    author: "Frank Herbert",
+                    synopsis: "Set on the desert planet Arrakis, Dune is the story of the boy Paul Atreides, who will become the mysterious man known as Muad'Dib. He avenges the traitorous plot against his noble family and brings to fruition humankind’s most ancient and unattainable dream.",
+                    cover: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=400",
+                    ambientBg: "linear-gradient(rgba(10,9,13,0.4), rgba(10,9,13,0.9)), url('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1600')",
+                    themeClass: "desert-theme",
+                    spotifyId: "37i9dQZF1DX1tz99407gPy",
+                    fmcArt: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=300",
+                    mmcArt: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=300",
+                    comments: ["The world-building is legendary.", "Fear is the mind-killer."]
+                }
+            ],
+            "Gothic-haunted": [
+                {
+                    id: "galland",
+                    title: "The Death of Jane Lawrence",
+                    author: "Caitlin Starling",
+                    synopsis: "A gothic nightmare mansion, a marriage of convenience, and dark, terrifying ritual magic. This book follows Jane as she uncovers why her new doctor husband cannot let her stay overnight at his decaying ancestral estate, Lindridge Hall.",
+                    cover: "https://images.unsplash.com/photo-1508349679140-346545b5087a?auto=format&fit=crop&q=80&w=400",
+                    ambientBg: "linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1508349679140-346545b5087a?auto=format&fit=crop&q=80&w=1600')",
+                    themeClass: "gothic-theme",
+                    spotifyId: "37i9dQZF1DX6Vf7vEW4N9W",
+                    fmcArt: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=300",
+                    mmcArt: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=300",
+                    comments: ["So incredibly spooky!", "Perfect rainy day book."]
+                }
+            ]
+        };
+
+        let currentActiveBook = null;
+
+        // Navigation State System
+        function showPage(pageId) {
+            document.getElementById('page-home').classList.add('hidden');
+            document.getElementById('page-results').classList.add('hidden');
+            document.getElementById('page-detail').classList.add('hidden');
+            
+            document.getElementById(`page-${pageId}`).classList.remove('hidden');
+
+            // Reset dynamic theme backgrounds when returning to Home or Results lists
+            if (pageId !== 'detail') {
+                document.body.style.backgroundImage = 'none';
+                document.body.className = '';
+                document.body.style.backgroundColor = '#0a090d';
+            }
+        }
+
+        // Handle Quiz Submission
+        function handleQuizSubmit(e) {
+            e.preventDefault();
+            const genre = document.getElementById('genre').value;
+            const vibe = document.getElementById('vibe').value;
+            const searchKey = `${genre}-${vibe}`;
+
+            const grid = document.getElementById('results-grid');
+            grid.innerHTML = ''; // Clean old searches
+
+            // Get matching books or fallback to default lists if custom category matches are missing
+            const books = mockDatabase[searchKey] || mockDatabase["Fantasy-enemies"];
+
+            books.forEach(book => {
+                const card = document.createElement('div');
+                card.className = 'book-card';
+                card.onclick = () => loadBookDetail(book);
+                card.innerHTML = `
+                    <div class="book-cover" style="background-image: url('${book.cover}')"></div>
+                    <div class="book-info">
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-author">By ${book.author}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            showPage('results');
+        }
+
+        // Load Book View & Trigger Immersive Background Change
+        function loadBookDetail(book) {
+            currentActiveBook = book;
+
+            // Apply Immersive Themes dynamically
+            document.body.style.backgroundImage = book.ambientBg;
+            document.body.className = book.themeClass; 
+            
+            // Special custom effect injection (e.g., if Fourth Wing, mimic floating element actions)
+            if(book.id === 'fourthwing') {
+                document.getElementById('ambient-effect').innerHTML = '<div style="position:absolute; color:rgba(255,255,255,0.05); font-size:4rem; top:20%; left:10%; transform: rotate(-10deg);">🐉</div><div style="position:absolute; color:rgba(255,255,255,0.04); font-size:6rem; bottom:15%; right:8%;">🐉</div>';
+            } else {
+                document.getElementById('ambient-effect').innerHTML = '';
+            }
+
+            // Populate Content Fields
+            document.getElementById('detail-title').innerText = book.title;
+            document.getElementById('detail-author').innerText = `By ${book.author}`;
+            document.getElementById('detail-synopsis').innerText = book.synopsis;
+            document.getElementById('detail-cover').style.backgroundImage = `url('${book.cover}')`;
+
+            // Embed Dynamic Custom Spotify Playlist
+            document.getElementById('playlist-embed').innerHTML = `
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/${book.spotifyId}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            `;
+
+            // Load Community Managed Fanart Postings
+            document.getElementById('fanart-gallery').innerHTML = `
+                <div class="fanart-card">
+                    <div class="fanart-img" style="background-image:url('${book.fmcArt}')"></div>
+                    <div class="fanart-caption">FMC (Female Main Character) concept render</div>
+                </div>
+                <div class="fanart-card">
+                    <div class="fanart-img" style="background-image:url('${book.mmcArt}')"></div>
+                    <div class="fanart-caption">MMC (Male Main Character) concept render</div>
+                </div>
+            `;
+
+            // Reset interaction counters
+            document.getElementById('reading-status').value = 'none';
+            rateBook(0);
+
+            // Redraw Comments list
+            renderComments();
+            showPage('detail');
+        }
+
+        // Tracking Options
+        function updateShelfStatus(status) {
+            if(status !== 'none') {
+                alert(`Book marked as: ${status.toUpperCase()}`);
+            }
+        }
+
+        function rateBook(stars) {
+            const starSpans = document.querySelectorAll('#star-rating span');
+            starSpans.forEach((span, index) => {
+                if (index < stars) {
+                    span.classList.add('active');
+                } else {
+                    span.classList.remove('active');
+                }
+            });
+        }
+
+        // Review Forum Logic
+        function renderComments() {
+            const commentContainer = document.getElementById('comments-list');
+            commentContainer.innerHTML = '';
+            currentActiveBook.comments.forEach(comment => {
+                const div = document.createElement('div');
+                div.className = 'comment';
+                div.innerHTML = `
+                    <div class="comment-author">@NoctisReader</div>
+                    <div>${comment}</div>
+                `;
+                commentContainer.appendChild(div);
+            });
+        }
+
+        function addComment() {
+            const textarea = document.getElementById('new-comment-text');
+            const text = textarea.value.trim();
+            if(text) {
+                currentActiveBook.comments.unshift(text); // prepend comment
+                textarea.value = '';
+                renderComments();
+            }
+        }
+
+        // --- AI CHATBOT INTERACTION SIMULATOR ---
+        function toggleAIChat() {
+            const box = document.getElementById('ai-chatbox');
+            box.classList.toggle('hidden');
+        }
+
+        function handleAISubmit() {
+            const input = document.getElementById('ai-input');
+            const messageText = input.value.trim();
+            if(!messageText) return;
+
+            const chatMessages = document.getElementById('ai-messages');
+
+            // Append User Question
+            const userDiv = document.createElement('div');
+            userDiv.className = 'msg user';
+            userDiv.innerText = messageText;
+            chatMessages.appendChild(userDiv);
+            input.value = '';
+
+            // Auto Scroll
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Generate contextual AI recommendation script simulation
+            setTimeout(() => {
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'msg ai';
+                
+                // Conversational Routing logic emulation
+                if(messageText.toLowerCase().includes('fourth') || messageText.toLowerCase().includes('dragon')) {
+                    aiDiv.innerText = "Ah, you seek high-stakes dragon battles and intense slow burns. I suggest immediately opening 'Fourth Wing' by Rebecca Yarros from our grid results.";
+                } else if(messageText.toLowerCase().includes('scifi') || messageText.toLowerCase().includes('space')) {
+                    aiDiv.innerText = "Traversing the universe? I recommend 'Dune' by Frank Herbert. A profound epic of planets, control, and dynamic geopolitical cosmic magic.";
+                } else {
+                    aiDiv.innerText = "Intriguing choice. Based on your prompt, I recommend looking into 'A Court of Thorns and Roses' or adjusting your homepage Discovery parameters to unlock high-stakes dark romantic fantasy options.";
+                }
+                
+                chatMessages.appendChild(aiDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
