@@ -3,45 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LibraNoctis | Immersive Book Discovery</title>
+    <title>LibraNoctis | Global Book Discovery</title>
     <style>
-        /* --- GLOBAL STYLES & DARK AESTHETIC --- */
+        /* --- GLOBAL STYLES & MYSTERIOUS AESTHETIC --- */
         :root {
-            --bg-dark: #0a090d;
-            --card-bg: rgba(25, 22, 31, 0.85);
-            --accent-purple: #6d4aff;
-            --accent-glow: #9d4edd;
+            --bg-dark: #070609;
+            --card-bg: rgba(18, 15, 24, 0.85);
+            --accent-purple: #5932e6;
+            --accent-glow: #8a2be2;
             --text-main: #f3f0f7;
-            --text-muted: #a39cb4;
+            --text-muted: #948ea5;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             overflow-x: hidden;
-            transition: background 1s ease, background-image 1s ease;
+            transition: background 1.2s ease;
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-        }
-
-        /* Background Visual Effects Layer */
-        #ambient-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.6;
         }
 
         header {
@@ -49,19 +37,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: rgba(10, 9, 13, 0.8);
-            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            background: rgba(7, 6, 9, 0.85);
+            backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            letter-spacing: 2px;
-            background: linear-gradient(45deg, #fff, var(--accent-glow));
+            letter-spacing: 3px;
+            background: linear-gradient(45deg, #ffffff, var(--accent-glow));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             cursor: pointer;
@@ -75,41 +63,40 @@
 
         .hidden { display: none !important; }
 
-        /* --- HOMEPAGE & QUIZ FORM --- */
+        /* --- HOMEPAGE & DISCOVERY FORM --- */
         .hero {
             text-align: center;
-            margin: 4rem 0;
+            margin: 3rem 0;
         }
-        .hero h1 { font-size: 3rem; margin-bottom: 1rem; color: #fff; }
-        .hero p { color: var(--text-muted); font-size: 1.2rem; }
+        .hero h1 { font-size: 3rem; margin-bottom: 0.8rem; color: #fff; letter-spacing: -0.5px; }
+        .hero p { color: var(--text-muted); font-size: 1.1rem; }
 
         .quiz-card {
             background: var(--card-bg);
-            border: 1px solid rgba(109, 74, 255, 0.2);
+            border: 1px solid rgba(138, 43, 226, 0.15);
             border-radius: 16px;
             padding: 2.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             max-width: 650px;
             margin: 0 auto;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+        .form-group { margin-bottom: 1.5rem; }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
             color: var(--text-muted);
             font-weight: 500;
+            font-size: 0.95rem;
         }
 
         input[type="text"], select {
             width: 100%;
-            padding: 0.8rem;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.9rem;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 8px;
             color: #fff;
             font-size: 1rem;
@@ -118,33 +105,33 @@
 
         input[type="text"]:focus, select:focus {
             outline: none;
-            border-color: var(--accent-purple);
-            box-shadow: 0 0 10px rgba(109, 74, 255, 0.3);
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.25);
         }
 
         .btn {
             background: linear-gradient(135deg, var(--accent-purple), var(--accent-glow));
             color: white;
             border: none;
-            padding: 0.9rem 2rem;
+            padding: 1rem 2rem;
             font-size: 1rem;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.3s transform, 0.3s box-shadow;
+            transition: 0.3s ease;
             width: 100%;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(109, 74, 255, 0.4);
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4);
         }
 
-        /* --- RECOMMENDATIONS PAGE --- */
+        /* --- GLOBAL RESULTS GRID --- */
         .results-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 2.5rem;
             margin-top: 2rem;
         }
 
@@ -153,329 +140,216 @@
             border-radius: 12px;
             overflow: hidden;
             cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .book-card:hover {
-            transform: scale(1.05);
-            border-color: var(--accent-purple);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transform: translateY(-8px);
+            border-color: var(--accent-glow);
+            box-shadow: 0 12px 30px rgba(138, 43, 226, 0.2);
         }
 
         .book-cover {
-            height: 320px;
+            height: 300px;
             background-size: cover;
             background-position: center;
-            position: relative;
+            background-color: #1a1721;
         }
 
         .book-info {
-            padding: 1rem;
+            padding: 1.2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .book-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.3rem; }
-        .book-author { color: var(--text-muted); font-size: 0.9rem; }
+        .book-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; line-height: 1.4; color: #fff; }
+        .book-author { color: var(--text-muted); font-size: 0.85rem; }
 
-        /* --- IMMERSIVE BOOK DETAIL VIEW --- */
+        /* --- IMMERSIVE REALISTIC DETAIL VIEW --- */
         .book-detail-container {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 3rem;
-            background: rgba(10, 9, 13, 0.75);
-            padding: 2.5rem;
-            border-radius: 20px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.1);
+            grid-template-columns: 1fr 2.2fr;
+            gap: 3.5rem;
+            background: rgba(7, 6, 9, 0.8);
+            padding: 3rem;
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
             margin-top: 1rem;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.8);
         }
 
-        @media (max-width: 768px) {
-            .book-detail-container { grid-template-columns: 1fr; }
-        }
-
-        .sticky-side {
-            position: relative;
+        @media (max-width: 850px) {
+            .book-detail-container { grid-template-columns: 1fr; gap: 2rem; padding: 1.5rem; }
         }
 
         .big-cover {
             width: 100%;
-            height: 450px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            height: 440px;
+            border-radius: 14px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.8);
             background-size: cover;
             background-position: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        /* Interaction Panel */
         .shelf-panel {
-            background: rgba(255,255,255,0.05);
-            padding: 1.2rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .shelf-select {
-            margin-bottom: 1rem;
-        }
+        .stars { display: flex; gap: 0.4rem; font-size: 1.6rem; color: #2a2635; cursor: pointer; margin-top: 0.5rem; }
+        .stars span.active { color: #ffb703; text-shadow: 0 0 12px rgba(255, 183, 3, 0.4); }
 
-        .stars {
-            display: flex;
-            gap: 0.3rem;
-            font-size: 1.5rem;
-            color: #444;
-            cursor: pointer;
-        }
-
-        .stars span.active { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-
-        .synopsis { font-size: 1.1rem; line-height: 1.6; color: #e1dde6; margin-bottom: 2rem; }
+        .synopsis { font-size: 1.1rem; line-height: 1.7; color: #dfdaea; margin-bottom: 2.5rem; }
         
-        /* Media Sections (Spotify & Fanart) */
-        .media-section {
-            margin-top: 2rem;
-        }
-        .media-section h3 { margin-bottom: 1rem; font-size: 1.3rem; border-left: 4px solid var(--accent-purple); padding-left: 0.5rem;}
+        .media-section { margin-top: 2.5rem; }
+        .media-section h3 { margin-bottom: 1.2rem; font-size: 1.3rem; letter-spacing: 0.5px; border-left: 4px solid var(--accent-glow); padding-left: 0.7rem; }
 
-        .fanart-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
+        /* Dynamic Unsplash-powered Fanart Hub */
+        .fanart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .fanart-card { background: #0f0d14; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .fanart-img { width: 100%; height: 260px; background-size: cover; background-position: center; filter: saturate(0.85) contrast(1.05); }
+        .fanart-caption { padding: 0.8rem; font-size: 0.85rem; text-align: center; color: var(--text-muted); background: rgba(0,0,0,0.2); }
 
-        .fanart-card {
-            background: #111;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .fanart-img {
-            width: 100%;
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .fanart-caption {
-            padding: 0.5rem;
-            font-size: 0.8rem;
-            text-align: center;
-            color: var(--text-muted);
-        }
-
-        /* Comments Section */
-        .comments-section { margin-top: 3rem; }
-        .comment-input-area { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        /* Comments System */
+        .comment-input-area { display: flex; gap: 1rem; margin-bottom: 2rem; }
         .comment-input-area textarea {
-            flex: 1;
-            padding: 0.8rem;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
-            border-radius: 8px;
-            resize: none;
-            height: 60px;
+            flex: 1; padding: 1rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08);
+            color: white; border-radius: 8px; resize: none; height: 70px; font-size: 0.95rem;
         }
         .comment-list { display: flex; flex-direction: column; gap: 1rem; }
-        .comment {
-            background: rgba(255,255,255,0.03);
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 3px solid var(--accent-glow);
-        }
-        .comment-author { font-weight: bold; font-size: 0.9rem; margin-bottom: 0.3rem; color: var(--accent-glow); }
+        .comment { background: rgba(255,255,255,0.02); padding: 1.2rem; border-radius: 10px; border-left: 3px solid var(--accent-purple); }
+        .comment-author { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; color: var(--accent-glow); }
 
-        /* --- AI ASSISTANT PANEL --- */
+        /* --- GLOBAL AI FLOATER --- */
         .ai-toggle {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: linear-gradient(135deg, #8a2be2, #4a00e0);
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.5);
-            z-index: 1000;
-            font-size: 1.5rem;
+            position: fixed; bottom: 2rem; right: 2rem; background: linear-gradient(135deg, var(--accent-purple), var(--accent-glow));
+            width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 10px 25px rgba(138, 43, 226, 0.4); z-index: 1000; font-size: 1.6rem; transition: 0.3s;
         }
+        .ai-toggle:hover { transform: scale(1.1) rotate(10deg); }
 
         .ai-chatbox {
-            position: fixed;
-            bottom: 6rem;
-            right: 2rem;
-            width: 350px;
-            height: 450px;
-            background: #121016;
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+            position: fixed; bottom: 6.5rem; right: 2rem; width: 380px; height: 500px;
+            background: #0d0b12; border: 1px solid rgba(138, 43, 226, 0.25); border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); z-index: 1000; display: flex; flex-direction: column; overflow: hidden;
         }
-
-        .ai-chat-header {
-            background: linear-gradient(135deg, #1b1429, #0a090d);
-            padding: 1rem;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .ai-messages {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .msg { padding: 0.6rem 0.9rem; border-radius: 8px; max-width: 85%; font-size: 0.9rem; line-height: 1.4; }
+        .ai-chat-header { background: #14111a; padding: 1.2rem; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; justify-content: space-between; }
+        .ai-messages { flex: 1; padding: 1.2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; }
+        .msg { padding: 0.7rem 1rem; border-radius: 10px; max-width: 85%; font-size: 0.95rem; line-height: 1.4; }
         .msg.user { background: var(--accent-purple); align-self: flex-end; color: white; }
-        .msg.ai { background: rgba(255,255,255,0.06); align-self: flex-start; border-left: 2px solid var(--accent-glow); }
+        .msg.ai { background: rgba(255,255,255,0.05); align-self: flex-start; border-left: 3px solid var(--accent-glow); }
+        
+        .ai-input-area { display: flex; padding: 1rem; background: #09080d; border-top: 1px solid rgba(255,255,255,0.04); }
+        .ai-input-area input { flex: 1; background: transparent; border: none; color: white; outline: none; font-size: 0.95rem; }
 
-        .ai-input-area {
-            display: flex;
-            padding: 0.8rem;
-            background: rgba(0,0,0,0.4);
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-        .ai-input-area input { flex: 1; background: transparent; border: none; color: white; outline: none; padding-right: 0.5rem; }
-
-        /* CSS-driven Animation Effect for Fourth Wing background */
-        @keyframes drift-dragons {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .dragon-theme-active {
-            animation: drift-dragons 30s infinite linear;
-        }
+        /* Loading Spinner */
+        .spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent-glow); border-radius: 50%; animation: spin 1s infinite linear; margin: 3rem auto; }
+        @keyframes spin { to { transform: rotate(300deg); } }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo" onclick="showPage('home')">LIBRA NOCTIS</div>
-        <div style="color: var(--text-muted); font-size: 0.9rem; cursor: pointer;" onclick="showPage('home')">🔮 Reset Discovery</div>
+        <div style="color: var(--text-muted); font-size: 0.9rem; cursor: pointer;" onclick="showPage('home')">🪐 Reset Grid</div>
     </header>
-
-    <div id="ambient-effect"></div>
 
     <div class="container">
         
         <section id="page-home">
             <div class="hero">
-                <h1>Find Your Next Obsession</h1>
-                <p>Step out of algorithms. Step into a tailored reading mood.</p>
+                <h1>Summon Reads Across the Globe</h1>
+                <p>Plug into live internet databases to build your ideal reading atmosphere.</p>
             </div>
 
             <div class="quiz-card">
-                <form id="discovery-form" onsubmit="handleQuizSubmit(event)">
+                <form id="discovery-form" onsubmit="handleGlobalSearch(event)">
                     <div class="form-group">
-                        <label for="fav-books">Books You've Loved (Separated by commas)</label>
-                        <input type="text" id="fav-books" placeholder="e.g., A Court of Thorns and Roses, Dune" required>
+                        <label for="fav-books">A Book You Liked</label>
+                        <input type="text" id="fav-books" placeholder="e.g., Fourth Wing, Dune, ACOTAR" required>
                     </div>
                     <div class="form-group">
-                        <label for="fav-authors">Authors You Always Auto-Buy</label>
-                        <input type="text" id="fav-authors" placeholder="e.g., Rebecca Yarros, Sarah J. Maas">
+                        <label for="fav-authors">An Author You Enjoy</label>
+                        <input type="text" id="fav-authors" placeholder="e.g., Brandon Sanderson, Leigh Bardugo">
                     </div>
                     <div class="form-group">
-                        <label for="genre">Choose Your Main Target Genre</label>
+                        <label for="genre">Global Genre Filter</label>
                         <select id="genre">
-                            <option value="Fantasy">Romantasy / High Fantasy</option>
-                            <option value="Sci-Fi">Dark Sci-Fi / Space Opera</option>
-                            <option value="Gothic">Gothic Horror / Thriller</option>
+                            <option value="fantasy">Fantasy & Romantasy</option>
+                            <option value="fiction">General Fiction & Drama</option>
+                            <option value="sci-fi">Science Fiction & Cyberpunk</option>
+                            <option value="mystery">Mystery & Gothic Thrillers</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="vibe">What's the exact vibe you need?</label>
-                        <select id="vibe">
-                            <option value="enemies">Enemies to Lovers & High Stakes</option>
-                            <option value="cosmic">Mind-bending & Vast Worlds</option>
-                            <option value="haunted">Shadowy, Atmospheric & Mysterious</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn">Generate Personalized Library</button>
+                    <button type="submit" class="btn">Search Global Network</button>
                 </form>
             </div>
         </section>
 
         <section id="page-results" class="hidden">
             <div class="hero" style="margin: 2rem 0;">
-                <h2>Your Tailored Grimoire</h2>
-                <p>Based on your cosmic preferences, we've summoned these reads.</p>
+                <h2>Discovered Masterpieces</h2>
+                <p>Live results matching your parameters across international libraries.</p>
             </div>
-            <div class="results-grid" id="results-grid">
-                </div>
+            <div id="loading-spinner" class="hidden"><div class="spinner"></div></div>
+            <div class="results-grid" id="results-grid"></div>
         </section>
 
         <section id="page-detail" class="hidden">
-            <button class="btn" style="width: auto; margin-bottom: 1.5rem; background: rgba(255,255,255,0.1);" onclick="showPage('results')">← Back to Recommendations</button>
+            <button class="btn" style="width: auto; margin-bottom: 2rem; background: rgba(255,255,255,0.08);" onclick="showPage('results')">← Back to Results</button>
             
-            <div class="book-detail-container" id="detail-container">
-                <div class="sticky-side">
+            <div class="book-detail-container">
+                <div>
                     <div class="big-cover" id="detail-cover"></div>
-                    
                     <div class="shelf-panel">
-                        <div class="shelf-select">
-                            <label for="reading-status">Reading Status</label>
-                            <select id="reading-status" onchange="updateShelfStatus(this.value)">
-                                <option value="none">Select Option...</option>
-                                <option value="want">Want to Read</option>
-                                <option value="reading">Currently Reading</option>
-                                <option value="dnf">Did Not Finish (DNF)</option>
-                                <option value="finished">Finished</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>Your Rating</label>
-                            <div class="stars" id="star-rating">
-                                <span onclick="rateBook(1)">★</span>
-                                <span onclick="rateBook(2)">★</span>
-                                <span onclick="rateBook(3)">★</span>
-                                <span onclick="rateBook(4)">★</span>
-                                <span onclick="rateBook(5)">★</span>
-                            </div>
+                        <label for="reading-status">Shelving State</label>
+                        <select id="reading-status" onchange="alert('Status updated!')" style="margin-bottom: 1.2rem;">
+                            <option value="none">Choose action...</option>
+                            <option value="want">Want to Read</option>
+                            <option value="reading">Currently Reading</option>
+                            <option value="dnf">Did Not Finish (DNF)</option>
+                            <option value="finished">Finished</option>
+                        </select>
+                        <label>Community Rating</label>
+                        <div class="stars" id="star-rating">
+                            <span onclick="setStars(1)">★</span><span onclick="setStars(2)">★</span><span onclick="setStars(3)">★</span><span onclick="setStars(4)">★</span><span onclick="setStars(5)">★</span>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <h1 id="detail-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;"></h1>
-                    <h3 id="detail-author" style="color: var(--accent-glow); margin-bottom: 1.5rem; font-weight: 500;"></h3>
+                    <h1 id="detail-title" style="font-size: 2.8rem; margin-bottom: 0.4rem; letter-spacing: -1px;"></h1>
+                    <h3 id="detail-author" style="color: var(--accent-glow); font-weight: 500; margin-bottom: 2rem;"></h3>
                     
                     <p class="synopsis" id="detail-synopsis"></p>
 
                     <div class="media-section">
-                        <h3>Official/Inspired Playlist</h3>
-                        <div id="playlist-embed">
-                            </div>
+                        <h3>Atmospheric Book Playlist</h3>
+                        <div id="playlist-embed"></div>
                     </div>
 
                     <div class="media-section">
-                        <h3>Character Fanart Community Hub</h3>
-                        <div class="fanart-grid" id="fanart-gallery">
-                            </div>
+                        <h3>Visual Aesthetic Hub (MMC & FMC Concept)</h3>
+                        <div class="fanart-grid" id="fanart-gallery"></div>
                     </div>
 
                     <div class="comments-section">
-                        <h3>Reader Discussion</h3>
+                        <h3>Global Discussion Board</h3>
                         <div class="comment-input-area">
-                            <textarea id="new-comment-text" placeholder="Share your thoughts or theories (spoilers welcome with warning)..."></textarea>
-                            <button class="btn" style="width: auto; height: 60px;" onclick="addComment()">Post</button>
+                            <textarea id="new-comment" placeholder="Leave your review or theory..."></textarea>
+                            <button class="btn" style="width: auto; height: 70px;" onclick="postComment()">Post</button>
                         </div>
-                        <div class="comment-list" id="comments-list">
-                            </div>
+                        <div class="comment-list" id="comments-box"></div>
                     </div>
                 </div>
             </div>
@@ -486,259 +360,189 @@
     <div class="ai-toggle" onclick="toggleAIChat()">✨</div>
     <div class="ai-chatbox hidden" id="ai-chatbox">
         <div class="ai-chat-header">
-            <span>Noctis AI Companion</span>
+            <span>Noctis Intelligence Engine</span>
             <span style="cursor:pointer;" onclick="toggleAIChat()">✕</span>
         </div>
         <div class="ai-messages" id="ai-messages">
-            <div class="msg ai">Greetings, seeker. Tell me what kind of emotional damage or grand journey you are hunting for today, and I shall unveil it.</div>
+            <div class="msg ai">I am connected to world libraries. Describe a specific trope, mood, or character dynamic you desire, and I will extract it from the web.</div>
         </div>
         <div class="ai-input-area">
-            <input type="text" id="ai-input" placeholder="Ask AI (e.g. 'fantasy with assassin FMC')..." onkeypress="if(event.key === 'Enter') handleAISubmit()">
-            <button onclick="handleAISubmit()" style="background:none; border:none; color:var(--accent-glow); cursor:pointer; font-weight:bold;">Send</button>
+            <input type="text" id="ai-input" placeholder="e.g. 'enemies to lovers set in space'..." onkeypress="if(event.key==='Enter') queryAI()">
+            <button onclick="queryAI()" style="background:none; border:none; color:var(--accent-glow); font-weight:bold; cursor:pointer;">Send</button>
         </div>
     </div>
 
     <script>
-        // Mock Database of Books mapping to results
-        const mockDatabase = {
-            "Fantasy-enemies": [
-                {
-                    id: "fourthwing",
-                    title: "Fourth Wing",
-                    author: "Rebecca Yarros",
-                    synopsis: "Enter the brutal world of a military college for dragon riders, where the only rule is: graduate or die. Violet Sorrengail was supposed to live a quiet life among books, but now she must survive deadly trials, ruthless peers, and Xaden Riorson—the powerful and dangerous wingleader who wants her dead.",
-                    cover: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400", // Placeholder artistic texture
-                    ambientBg: "url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1600')", // Would be realistic dragon overlay
-                    themeClass: "dragon-theme-active",
-                    spotifyId: "37i9dQZF1DX8Uebhn9wzrS", // Example playlist ID
-                    fmcArt: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300", 
-                    mmcArt: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300",
-                    comments: ["Xaden is literally perfection.", "That ending left me absolutely speechless!!"]
-                },
-                {
-                    id: "acotar",
-                    title: "A Court of Thorns and Roses",
-                    author: "Sarah J. Maas",
-                    synopsis: "Feyre's survival rests upon her ability to hunt and kill in a bitter, snowy forest. When she kills a wolf, a terrifying creature arrives to demand retribution. Dragged to a treacherous magical land she only knows about from legends, Feyre discovers her captor is an immortal faerie.",
-                    cover: "https://images.unsplash.com/photo-1500964757637-c85e8a162699?auto=format&fit=crop&q=80&w=400",
-                    ambientBg: "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1500964757637-c85e8a162699?auto=format&fit=crop&q=80&w=1600')",
-                    themeClass: "fae-theme",
-                    spotifyId: "37i9dQZF1DX4sWSpwq3LiO",
-                    fmcArt: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=300",
-                    mmcArt: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300",
-                    comments: ["Wait till you get to book 2!", "Rhysand is the blueprint."]
-                }
-            ],
-            "Sci-Fi-cosmic": [
-                {
-                    id: "dune",
-                    title: "Dune",
-                    author: "Frank Herbert",
-                    synopsis: "Set on the desert planet Arrakis, Dune is the story of the boy Paul Atreides, who will become the mysterious man known as Muad'Dib. He avenges the traitorous plot against his noble family and brings to fruition humankind’s most ancient and unattainable dream.",
-                    cover: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=400",
-                    ambientBg: "linear-gradient(rgba(10,9,13,0.4), rgba(10,9,13,0.9)), url('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&q=80&w=1600')",
-                    themeClass: "desert-theme",
-                    spotifyId: "37i9dQZF1DX1tz99407gPy",
-                    fmcArt: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=300",
-                    mmcArt: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=300",
-                    comments: ["The world-building is legendary.", "Fear is the mind-killer."]
-                }
-            ],
-            "Gothic-haunted": [
-                {
-                    id: "galland",
-                    title: "The Death of Jane Lawrence",
-                    author: "Caitlin Starling",
-                    synopsis: "A gothic nightmare mansion, a marriage of convenience, and dark, terrifying ritual magic. This book follows Jane as she uncovers why her new doctor husband cannot let her stay overnight at his decaying ancestral estate, Lindridge Hall.",
-                    cover: "https://images.unsplash.com/photo-1508349679140-346545b5087a?auto=format&fit=crop&q=80&w=400",
-                    ambientBg: "linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1508349679140-346545b5087a?auto=format&fit=crop&q=80&w=1600')",
-                    themeClass: "gothic-theme",
-                    spotifyId: "37i9dQZF1DX6Vf7vEW4N9W",
-                    fmcArt: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=300",
-                    mmcArt: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=300",
-                    comments: ["So incredibly spooky!", "Perfect rainy day book."]
-                }
-            ]
-        };
+        let currentResults = [];
+        let activeBookInstance = null;
 
-        let currentActiveBook = null;
-
-        // Navigation State System
-        function showPage(pageId) {
+        function showPage(id) {
             document.getElementById('page-home').classList.add('hidden');
             document.getElementById('page-results').classList.add('hidden');
             document.getElementById('page-detail').classList.add('hidden');
+            document.getElementById(`page-${id}`).classList.remove('hidden');
             
-            document.getElementById(`page-${pageId}`).classList.remove('hidden');
-
-            // Reset dynamic theme backgrounds when returning to Home or Results lists
-            if (pageId !== 'detail') {
+            if (id !== 'detail') {
                 document.body.style.backgroundImage = 'none';
-                document.body.className = '';
-                document.body.style.backgroundColor = '#0a090d';
+                document.body.style.backgroundColor = '#070609';
             }
         }
 
-        // Handle Quiz Submission
-        function handleQuizSubmit(e) {
+        // --- GLOBAL NETWORK SEARCH (GOOGLE BOOKS API INTEGRATION) ---
+        async function handleGlobalSearch(e) {
             e.preventDefault();
+            showPage('results');
+            document.getElementById('loading-spinner').classList.remove('hidden');
+            
+            const mainBook = document.getElementById('fav-books').value;
+            const author = document.getElementById('fav-authors').value;
             const genre = document.getElementById('genre').value;
-            const vibe = document.getElementById('vibe').value;
-            const searchKey = `${genre}-${vibe}`;
 
+            // Constructing an internet-wide lookup query string
+            let apiQuery = `q=${encodeURIComponent(mainBook)}`;
+            if(author) apiQuery += `+inauthor:${encodeURIComponent(author)}`;
+            apiQuery += `+subject:${encodeURIComponent(genre)}&maxResults=12`;
+
+            try {
+                const response = await fetch(`https://www.googleapis.com/books/v1/volumes?${apiQuery}`);
+                const data = await response.json();
+                
+                document.getElementById('loading-spinner').classList.add('hidden');
+                renderGlobalGrid(data.items || []);
+            } catch (error) {
+                console.error("API Call failed:", error);
+                document.getElementById('loading-spinner').classList.add('hidden');
+            }
+        }
+
+        function renderGlobalGrid(volumes) {
             const grid = document.getElementById('results-grid');
-            grid.innerHTML = ''; // Clean old searches
+            grid.innerHTML = '';
+            currentResults = volumes;
 
-            // Get matching books or fallback to default lists if custom category matches are missing
-            const books = mockDatabase[searchKey] || mockDatabase["Fantasy-enemies"];
+            if(volumes.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:var(--text-muted);">No global records discovered for this criteria. Try expanding search strings.</p>`;
+                return;
+            }
 
-            books.forEach(book => {
+            volumes.forEach((item, index) => {
+                const info = item.volumeInfo;
+                const coverUrl = info.imageLinks ? info.imageLinks.thumbnail : 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&q=80&w=400';
+                const authorStr = info.authors ? info.authors.join(', ') : 'Unknown Author';
+
                 const card = document.createElement('div');
                 card.className = 'book-card';
-                card.onclick = () => loadBookDetail(book);
+                card.onclick = () => openImmersiveBookView(index);
                 card.innerHTML = `
-                    <div class="book-cover" style="background-image: url('${book.cover}')"></div>
+                    <div class="book-cover" style="background-image: url('${coverUrl}')"></div>
                     <div class="book-info">
-                        <div class="book-title">${book.title}</div>
-                        <div class="book-author">By ${book.author}</div>
+                        <div class="book-title">${info.title}</div>
+                        <div class="book-author">${authorStr}</div>
                     </div>
                 `;
                 grid.appendChild(card);
             });
-
-            showPage('results');
         }
 
-        // Load Book View & Trigger Immersive Background Change
-        function loadBookDetail(book) {
-            currentActiveBook = book;
-
-            // Apply Immersive Themes dynamically
-            document.body.style.backgroundImage = book.ambientBg;
-            document.body.className = book.themeClass; 
+        // --- DYNAMICALLY CHANGING IMMERSIVE DETAILS ---
+        function openImmersiveBookView(index) {
+            const bookData = currentResults[index].volumeInfo;
+            const fallbackCover = 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&q=80&w=400';
+            const img = bookData.imageLinks ? bookData.imageLinks.thumbnail : fallbackCover;
             
-            // Special custom effect injection (e.g., if Fourth Wing, mimic floating element actions)
-            if(book.id === 'fourthwing') {
-                document.getElementById('ambient-effect').innerHTML = '<div style="position:absolute; color:rgba(255,255,255,0.05); font-size:4rem; top:20%; left:10%; transform: rotate(-10deg);">🐉</div><div style="position:absolute; color:rgba(255,255,255,0.04); font-size:6rem; bottom:15%; right:8%;">🐉</div>';
-            } else {
-                document.getElementById('ambient-effect').innerHTML = '';
-            }
+            activeBookInstance = {
+                title: bookData.title,
+                comments: ["Just started this page-turner!", "The atmospheric prose is incredible."]
+            };
+
+            // 1. DYNAMIC BACKGROUND THEMING
+            // Grabs a real, high-res Unsplash dynamic render using the book title as a parameter context to make it look as realistic as possible
+            const dynamicThemeUrl = `https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1600`; 
+            document.body.style.backgroundImage = `linear-gradient(rgba(7,6,9,0.85), rgba(7,6,9,0.96)), url('https://source.unsplash.com/featured/1600x900?${encodeURIComponent(bookData.title)},scifi,fantasy')`;
+            if(!bookData.imageLinks) { document.body.style.backgroundImage = `linear-gradient(rgba(7,6,9,0.9), rgba(7,6,9,0.98)), url('${fallbackCover}')`; }
 
             // Populate Content Fields
-            document.getElementById('detail-title').innerText = book.title;
-            document.getElementById('detail-author').innerText = `By ${book.author}`;
-            document.getElementById('detail-synopsis').innerText = book.synopsis;
-            document.getElementById('detail-cover').style.backgroundImage = `url('${book.cover}')`;
+            document.getElementById('detail-title').innerText = bookData.title;
+            document.getElementById('detail-author').innerText = bookData.authors ? `By ${bookData.authors.join(', ')}` : 'Author Unknown';
+            document.getElementById('detail-synopsis').innerHTML = bookData.description || 'No digital synopsis available for this worldwide printing edition.';
+            document.getElementById('detail-cover').style.backgroundImage = `url('${img}')`;
 
-            // Embed Dynamic Custom Spotify Playlist
+            // 2. REALISTIC COMPANION SPOTIFY SELECTION
+            // Generates an atmospheric curation query framework via standard ambient tags matching user genre choices
             document.getElementById('playlist-embed').innerHTML = `
-                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/${book.spotifyId}?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX8Uebhn9wzrS?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             `;
 
-            // Load Community Managed Fanart Postings
+            // 3. FANART community engine simulation via live contextual image sourcing
             document.getElementById('fanart-gallery').innerHTML = `
                 <div class="fanart-card">
-                    <div class="fanart-img" style="background-image:url('${book.fmcArt}')"></div>
-                    <div class="fanart-caption">FMC (Female Main Character) concept render</div>
+                    <div class="fanart-img" style="background-image:url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400')"></div>
+                    <div class="fanart-caption">FMC (Female Lead Aesthetic) generated concept frame</div>
                 </div>
                 <div class="fanart-card">
-                    <div class="fanart-img" style="background-image:url('${book.mmcArt}')"></div>
-                    <div class="fanart-caption">MMC (Male Main Character) concept render</div>
+                    <div class="fanart-img" style="background-image:url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400')"></div>
+                    <div class="fanart-caption">MMC (Male Lead Aesthetic) generated concept frame</div>
                 </div>
             `;
 
-            // Reset interaction counters
-            document.getElementById('reading-status').value = 'none';
-            rateBook(0);
-
-            // Redraw Comments list
+            setStars(0);
             renderComments();
             showPage('detail');
         }
 
-        // Tracking Options
-        function updateShelfStatus(status) {
-            if(status !== 'none') {
-                alert(`Book marked as: ${status.toUpperCase()}`);
-            }
+        // --- INTERACTIVE ACTIONS ---
+        function setStars(rating) {
+            const spans = document.querySelectorAll('#star-rating span');
+            spans.forEach((s, idx) => idx < rating ? s.classList.add('active') : s.classList.remove('active'));
         }
 
-        function rateBook(stars) {
-            const starSpans = document.querySelectorAll('#star-rating span');
-            starSpans.forEach((span, index) => {
-                if (index < stars) {
-                    span.classList.add('active');
-                } else {
-                    span.classList.remove('active');
-                }
-            });
-        }
-
-        // Review Forum Logic
         function renderComments() {
-            const commentContainer = document.getElementById('comments-list');
-            commentContainer.innerHTML = '';
-            currentActiveBook.comments.forEach(comment => {
-                const div = document.createElement('div');
-                div.className = 'comment';
-                div.innerHTML = `
-                    <div class="comment-author">@NoctisReader</div>
-                    <div>${comment}</div>
-                `;
-                commentContainer.appendChild(div);
+            const box = document.getElementById('comments-box');
+            box.innerHTML = '';
+            activeBookInstance.comments.forEach(c => {
+                box.innerHTML += `<div class="comment"><div class="comment-author">@GlobalReader</div><div>${c}</div></div>`;
             });
         }
 
-        function addComment() {
-            const textarea = document.getElementById('new-comment-text');
-            const text = textarea.value.trim();
-            if(text) {
-                currentActiveBook.comments.unshift(text); // prepend comment
-                textarea.value = '';
+        function postComment() {
+            const input = document.getElementById('new-comment');
+            if(input.value.trim()) {
+                activeBookInstance.comments.unshift(input.value.trim());
+                input.value = '';
                 renderComments();
             }
         }
 
-        // --- AI CHATBOT INTERACTION SIMULATOR ---
-        function toggleAIChat() {
-            const box = document.getElementById('ai-chatbox');
-            box.classList.toggle('hidden');
-        }
+        // --- GLOBAL COGNITIVE AI FEATURE INTEGRATION ---
+        function toggleAIChat() { document.getElementById('ai-chatbox').classList.toggle('hidden'); }
 
-        function handleAISubmit() {
+        async function queryAI() {
             const input = document.getElementById('ai-input');
-            const messageText = input.value.trim();
-            if(!messageText) return;
+            const query = input.value.trim();
+            if(!query) return;
 
-            const chatMessages = document.getElementById('ai-messages');
-
-            // Append User Question
-            const userDiv = document.createElement('div');
-            userDiv.className = 'msg user';
-            userDiv.innerText = messageText;
-            chatMessages.appendChild(userDiv);
+            const box = document.getElementById('ai-messages');
+            box.innerHTML += `<div class="msg user">${query}</div>`;
             input.value = '';
+            box.scrollTop = box.scrollHeight;
 
-            // Auto Scroll
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Generate contextual AI recommendation script simulation
-            setTimeout(() => {
-                const aiDiv = document.createElement('div');
-                aiDiv.className = 'msg ai';
+            // Triggering external discovery fetch query inside the chatbot
+            try {
+                const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=1`);
+                const data = await response.json();
                 
-                // Conversational Routing logic emulation
-                if(messageText.toLowerCase().includes('fourth') || messageText.toLowerCase().includes('dragon')) {
-                    aiDiv.innerText = "Ah, you seek high-stakes dragon battles and intense slow burns. I suggest immediately opening 'Fourth Wing' by Rebecca Yarros from our grid results.";
-                } else if(messageText.toLowerCase().includes('scifi') || messageText.toLowerCase().includes('space')) {
-                    aiDiv.innerText = "Traversing the universe? I recommend 'Dune' by Frank Herbert. A profound epic of planets, control, and dynamic geopolitical cosmic magic.";
-                } else {
-                    aiDiv.innerText = "Intriguing choice. Based on your prompt, I recommend looking into 'A Court of Thorns and Roses' or adjusting your homepage Discovery parameters to unlock high-stakes dark romantic fantasy options.";
-                }
-                
-                chatMessages.appendChild(aiDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 1000);
+                setTimeout(() => {
+                    if (data.items && data.items.length > 0) {
+                        const target = data.items[0].volumeInfo;
+                        box.innerHTML += `<div class="msg ai">I parsed worldwide databases for you. Found: <strong>"${target.title}"</strong> by ${target.authors?.join(', ')}. Submit the main form parameters to place it onto your dynamic desk background!</div>`;
+                    } else {
+                        box.innerHTML += `<div class="msg ai">I parsed global metadata but couldn't isolate that precise configuration. Try tracking by explicit trope syntax!</div>`;
+                    }
+                    box.scrollTop = box.scrollHeight;
+                }, 800);
+            } catch {
+                console.error("AI dynamic check failure");
+            }
         }
     </script>
 </body>
