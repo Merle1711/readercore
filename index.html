@@ -1,0 +1,2559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grimoire — Find Your Next Obsession</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0a0e;
+    --deep: #120d15;
+    --void: #080509;
+    --mist: #1e1525;
+    --smoke: #2a1e35;
+    --ash: #3d2d50;
+    --ghost: #6b5580;
+    --silver: #a08cb8;
+    --pale: #d4c8e2;
+    --whisper: #ede8f5;
+    --gold: #c8a84b;
+    --gold-dim: #8a6e2a;
+    --crimson: #8b1a2c;
+    --teal-myst: #1a5c5c;
+    --teal-bright: #2ea89a;
+    --ember: #b85a1a;
+    --star: #e8d5a3;
+    --font-display: 'Cinzel Decorative', serif;
+    --font-title: 'Cinzel', serif;
+    --font-body: 'EB Garamond', serif;
+    --font-ui: 'Raleway', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--void);
+    color: var(--whisper);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ═══════════════════════════════
+     SCROLLBAR
+  ═══════════════════════════════ */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--void); }
+  ::-webkit-scrollbar-thumb { background: var(--ash); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ghost); }
+
+  /* ═══════════════════════════════
+     CANVAS BACKGROUND
+  ═══════════════════════════════ */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+  }
+
+  #bg-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(8,5,9,0.7) 100%);
+  }
+
+  /* ═══════════════════════════════
+     PAGES
+  ═══════════════════════════════ */
+  .page {
+    display: none;
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+  }
+  .page.active { display: block; }
+
+  /* ═══════════════════════════════
+     NAV
+  ═══════════════════════════════ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: linear-gradient(to bottom, rgba(8,5,9,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-shadow: 0 0 30px rgba(200,168,75,0.4);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--silver);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .btn-ghost {
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--ash);
+    color: var(--silver);
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 1px;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(200,168,75,0.05);
+  }
+
+  .btn-gold {
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    border: none;
+    color: var(--void);
+    padding: 0.5rem 1.4rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 1px;
+    font-weight: 500;
+  }
+
+  .btn-gold:hover {
+    background: linear-gradient(135deg, #d4b85e, #c8a84b);
+    box-shadow: 0 0 20px rgba(200,168,75,0.3);
+  }
+
+  /* ═══════════════════════════════
+     HOME PAGE
+  ═══════════════════════════════ */
+  #page-home {
+    min-height: 100vh;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    color: var(--whisper);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+    text-shadow: 0 0 80px rgba(212,200,226,0.15);
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-title);
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: var(--ghost);
+    letter-spacing: 0.2em;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s forwards;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--pale);
+    max-width: 600px;
+    margin-bottom: 3.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+    line-height: 1.8;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 1s 1.1s forwards;
+  }
+
+  .btn-primary {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--gold) 0%, #a07a30 100%);
+    border: none;
+    color: var(--void);
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    transition: all 0.4s;
+    border-radius: 1px;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary:hover { box-shadow: 0 0 40px rgba(200,168,75,0.4), 0 4px 20px rgba(0,0,0,0.5); transform: translateY(-1px); }
+
+  .btn-secondary {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--ghost);
+    color: var(--pale);
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 1px;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--pale);
+    background: rgba(212,200,226,0.05);
+  }
+
+  /* Divider ornament */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--ghost);
+    font-size: 0.8rem;
+    margin: 4rem 0 3rem;
+  }
+
+  .ornament-line {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--ash), transparent);
+    flex: 1;
+    max-width: 200px;
+  }
+
+  /* Featured books grid */
+  .section {
+    padding: 5rem 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+  }
+
+  .section-title {
+    font-family: var(--font-title);
+    font-size: 1.6rem;
+    color: var(--pale);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+
+  .section-link {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    border-bottom: 1px solid transparent;
+  }
+
+  .section-link:hover { opacity: 0.7; border-bottom-color: var(--gold); }
+
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2rem;
+  }
+
+  /* Book Card */
+  .book-card {
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+  }
+
+  .book-card:hover { transform: translateY(-8px); }
+
+  .book-cover {
+    width: 100%;
+    aspect-ratio: 2/3;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6), 4px 0 0 rgba(0,0,0,0.4);
+    margin-bottom: 1rem;
+    background: var(--smoke);
+  }
+
+  .book-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .book-card:hover .book-cover-img { transform: scale(1.05); }
+
+  .book-cover-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8,5,9,0.8) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+  }
+
+  .book-card:hover .book-cover-overlay { opacity: 1; }
+
+  .book-cover-peek {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .book-title {
+    font-family: var(--font-title);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--pale);
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+  }
+
+  .book-author {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--ghost);
+  }
+
+  .book-genre-tag {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: rgba(138,110,184,0.15);
+    border: 1px solid rgba(138,110,184,0.25);
+    color: var(--silver);
+    padding: 2px 8px;
+    border-radius: 1px;
+    margin-top: 0.4rem;
+  }
+
+  /* ═══════════════════════════════
+     QUIZ / RECOMMENDATION FORM
+  ═══════════════════════════════ */
+  #page-quiz {
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+  }
+
+  .quiz-container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .quiz-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .quiz-title {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    color: var(--pale);
+    margin-bottom: 0.5rem;
+  }
+
+  .quiz-subtitle {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--silver);
+    font-size: 1.05rem;
+  }
+
+  /* Step indicator */
+  .step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--ash);
+    transition: all 0.3s;
+  }
+
+  .step-dot.active {
+    background: var(--gold);
+    box-shadow: 0 0 10px rgba(200,168,75,0.5);
+    width: 24px;
+    border-radius: 4px;
+  }
+
+  .step-dot.done { background: var(--gold-dim); }
+
+  /* Form steps */
+  .form-step {
+    display: none;
+    animation: fadeUp 0.5s forwards;
+  }
+
+  .form-step.active { display: block; }
+
+  .form-field {
+    margin-bottom: 2rem;
+  }
+
+  .form-label {
+    display: block;
+    font-family: var(--font-title);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--silver);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  .form-input {
+    width: 100%;
+    background: rgba(30,21,37,0.8);
+    border: 1px solid var(--ash);
+    color: var(--whisper);
+    padding: 0.8rem 1.2rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: all 0.3s;
+    border-radius: 1px;
+    outline: none;
+  }
+
+  .form-input:focus {
+    border-color: var(--gold);
+    background: rgba(30,21,37,0.95);
+    box-shadow: 0 0 0 3px rgba(200,168,75,0.08);
+  }
+
+  .form-input::placeholder { color: var(--ghost); font-style: italic; }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  /* Genre chips */
+  .genre-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .genre-chip {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid var(--ash);
+    color: var(--silver);
+    background: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    border-radius: 1px;
+  }
+
+  .genre-chip:hover {
+    border-color: var(--ghost);
+    color: var(--pale);
+  }
+
+  .genre-chip.selected {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(200,168,75,0.08);
+    box-shadow: 0 0 12px rgba(200,168,75,0.1);
+  }
+
+  /* Vibe slider */
+  .vibe-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .vibe-label {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ghost);
+    width: 100px;
+    line-height: 1.4;
+  }
+
+  .vibe-label.right { text-align: right; }
+
+  .vibe-slider {
+    flex: 1;
+    margin: 0 1.5rem;
+    -webkit-appearance: none;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold) 0%, var(--ash) 100%);
+    outline: none;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+
+  .vibe-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(200,168,75,0.4);
+    border: 2px solid var(--void);
+  }
+
+  /* Form nav */
+  .form-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--smoke);
+  }
+
+  /* ═══════════════════════════════
+     RECOMMENDATIONS PAGE
+  ═══════════════════════════════ */
+  #page-recs {
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+  }
+
+  .recs-header {
+    text-align: center;
+    padding: 0 2rem;
+    margin-bottom: 4rem;
+  }
+
+  .recs-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--pale);
+    margin-bottom: 0.5rem;
+  }
+
+  .recs-subtitle {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--ghost);
+    font-size: 1rem;
+  }
+
+  .recs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2.5rem;
+    padding: 0 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ═══════════════════════════════
+     BOOK DETAIL PAGE
+  ═══════════════════════════════ */
+  #page-book {
+    padding-top: 0;
+    position: relative;
+  }
+
+  .book-hero {
+    min-height: 70vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    background: transparent;
+  }
+
+  .book-hero-content {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    align-items: flex-end;
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .book-cover-large {
+    width: 200px;
+    aspect-ratio: 2/3;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 8px 0 0 rgba(0,0,0,0.6);
+    flex-shrink: 0;
+  }
+
+  .book-cover-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .book-hero-meta {}
+
+  .book-detail-genre {
+    font-family: var(--font-ui);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .book-detail-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--whisper);
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+
+  .book-detail-author {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--silver);
+    margin-bottom: 1.5rem;
+  }
+
+  .book-detail-stats {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    color: var(--ghost);
+    letter-spacing: 0.05em;
+  }
+
+  .stat-stars {
+    color: var(--gold);
+    font-size: 0.9rem;
+  }
+
+  /* Book body */
+  .book-body {
+    padding: 3rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 4rem;
+  }
+
+  .book-main {}
+
+  .book-section {
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--smoke);
+  }
+
+  .book-section:last-child { border-bottom: none; }
+
+  .book-section-title {
+    font-family: var(--font-title);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+
+  .book-synopsis {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--pale);
+    line-height: 1.9;
+  }
+
+  /* Rating widget */
+  .rating-widget {
+    background: rgba(30,21,37,0.6);
+    border: 1px solid var(--smoke);
+    border-radius: 2px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .status-buttons {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+
+  .status-btn {
+    font-family: var(--font-ui);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--ash);
+    color: var(--ghost);
+    background: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    border-radius: 1px;
+  }
+
+  .status-btn:hover { border-color: var(--ghost); color: var(--pale); }
+  .status-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(200,168,75,0.08); }
+
+  .star-rating {
+    display: flex;
+    gap: 0.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .star {
+    font-size: 1.4rem;
+    color: var(--ash);
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+  }
+
+  .star:hover, .star.lit { color: var(--gold); text-shadow: 0 0 8px rgba(200,168,75,0.4); }
+
+  /* Playlist */
+  .playlist-track {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(42,30,53,0.6);
+    transition: background 0.2s;
+    border-radius: 2px;
+    padding: 0.7rem 0.5rem;
+    cursor: pointer;
+  }
+
+  .playlist-track:hover { background: rgba(42,30,53,0.4); }
+
+  .track-num {
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    color: var(--ghost);
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .track-art {
+    width: 36px;
+    height: 36px;
+    border-radius: 2px;
+    background: var(--smoke);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    overflow: hidden;
+  }
+
+  .track-info { flex: 1; min-width: 0; }
+
+  .track-name {
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    color: var(--pale);
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track-artist {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--ghost);
+  }
+
+  .track-duration {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    color: var(--ghost);
+    flex-shrink: 0;
+  }
+
+  /* Sidebar */
+  .book-sidebar {}
+
+  .sidebar-card {
+    background: rgba(18,13,21,0.7);
+    border: 1px solid var(--smoke);
+    border-radius: 2px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .sidebar-title {
+    font-family: var(--font-title);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  /* Fan art grid */
+  .fanart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .fanart-item {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--smoke);
+    position: relative;
+  }
+
+  .fanart-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+
+  .fanart-item:hover img { transform: scale(1.08); }
+
+  /* Comments */
+  .comment {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--smoke);
+  }
+
+  .comment:last-child { border-bottom: none; }
+
+  .comment-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .comment-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ash), var(--smoke));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-title);
+    font-size: 0.65rem;
+    color: var(--silver);
+    flex-shrink: 0;
+  }
+
+  .comment-author {
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    color: var(--pale);
+    font-weight: 500;
+  }
+
+  .comment-date {
+    font-family: var(--font-ui);
+    font-size: 0.68rem;
+    color: var(--ghost);
+    margin-left: auto;
+  }
+
+  .comment-text {
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    color: var(--silver);
+    line-height: 1.7;
+  }
+
+  .comment-input {
+    width: 100%;
+    background: rgba(30,21,37,0.6);
+    border: 1px solid var(--ash);
+    color: var(--whisper);
+    padding: 0.8rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    resize: none;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.3s;
+    border-radius: 1px;
+    margin-bottom: 0.7rem;
+  }
+
+  .comment-input:focus { border-color: var(--gold); }
+  .comment-input::placeholder { color: var(--ghost); font-style: italic; }
+
+  /* ═══════════════════════════════
+     AI CHAT ASSISTANT
+  ═══════════════════════════════ */
+  #ai-chat-btn {
+    position: fixed;
+    bottom: 2.5rem;
+    right: 2.5rem;
+    z-index: 200;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 20px rgba(200,168,75,0.2);
+    transition: all 0.3s;
+    font-size: 1.4rem;
+  }
+
+  #ai-chat-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.6), 0 0 30px rgba(200,168,75,0.35);
+  }
+
+  #ai-chat-panel {
+    position: fixed;
+    bottom: 6rem;
+    right: 2.5rem;
+    z-index: 200;
+    width: 360px;
+    max-height: 520px;
+    background: rgba(12,8,15,0.96);
+    border: 1px solid var(--ash);
+    border-radius: 4px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px) scale(0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(20px);
+  }
+
+  #ai-chat-panel.open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .chat-panel-header {
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--smoke);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chat-panel-title {
+    font-family: var(--font-title);
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .chat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal-bright);
+    box-shadow: 0 0 6px rgba(46,168,154,0.6);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .chat-close {
+    background: none;
+    border: none;
+    color: var(--ghost);
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .chat-close:hover { color: var(--pale); }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    min-height: 0;
+  }
+
+  .chat-message {
+    max-width: 85%;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 0.7rem 1rem;
+    border-radius: 3px;
+  }
+
+  .chat-message.ai {
+    background: rgba(30,21,37,0.8);
+    border: 1px solid var(--smoke);
+    color: var(--pale);
+    align-self: flex-start;
+  }
+
+  .chat-message.user {
+    background: linear-gradient(135deg, rgba(200,168,75,0.15), rgba(138,110,42,0.1));
+    border: 1px solid rgba(200,168,75,0.2);
+    color: var(--whisper);
+    align-self: flex-end;
+  }
+
+  .chat-input-row {
+    padding: 0.8rem 1rem;
+    border-top: 1px solid var(--smoke);
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .chat-input {
+    flex: 1;
+    background: rgba(30,21,37,0.6);
+    border: 1px solid var(--ash);
+    color: var(--whisper);
+    padding: 0.55rem 0.8rem;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+  }
+
+  .chat-input:focus { border-color: var(--gold); }
+  .chat-input::placeholder { color: var(--ghost); font-style: italic; }
+
+  .chat-send {
+    background: var(--gold);
+    border: none;
+    color: var(--void);
+    padding: 0.55rem 0.9rem;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+
+  .chat-send:hover { background: #d4b85e; }
+
+  .chat-thinking {
+    display: flex;
+    gap: 4px;
+    padding: 0.5rem;
+    align-self: flex-start;
+  }
+
+  .chat-thinking span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ghost);
+    animation: bounce 1.2s infinite;
+  }
+
+  .chat-thinking span:nth-child(2) { animation-delay: 0.2s; }
+  .chat-thinking span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+  }
+
+  /* ═══════════════════════════════
+     ANIMATIONS
+  ═══════════════════════════════ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .fade-in { animation: fadeIn 0.6s forwards; }
+
+  /* ═══════════════════════════════
+     LOADING OVERLAY
+  ═══════════════════════════════ */
+  #loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    background: var(--void);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: opacity 0.8s;
+  }
+
+  .loading-rune {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--gold);
+    animation: spinGlow 2s linear infinite;
+  }
+
+  @keyframes spinGlow {
+    0% { transform: rotate(0deg); text-shadow: 0 0 20px rgba(200,168,75,0.5); }
+    50% { text-shadow: 0 0 40px rgba(200,168,75,0.8); }
+    100% { transform: rotate(360deg); text-shadow: 0 0 20px rgba(200,168,75,0.5); }
+  }
+
+  .loading-text {
+    font-family: var(--font-ui);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ghost);
+  }
+
+  /* ═══════════════════════════════
+     UTILITY
+  ═══════════════════════════════ */
+  .hidden { display: none !important; }
+
+  .back-btn {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    color: var(--ghost);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+    padding: 0;
+  }
+
+  .back-btn:hover { color: var(--pale); }
+
+  .back-btn::before { content: '←'; font-size: 0.9rem; }
+
+  .mt-1 { margin-top: 0.5rem; }
+  .mb-2 { margin-bottom: 1rem; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .book-body { grid-template-columns: 1fr; }
+    .book-hero-content { grid-template-columns: 1fr; }
+    .book-cover-large { width: 150px; }
+    nav { padding: 1rem 1.5rem; }
+    .section { padding: 4rem 1.5rem; }
+    .recs-grid { padding: 0 1.5rem; }
+    nav .nav-links { display: none; }
+    #ai-chat-panel { width: calc(100vw - 2rem); right: 1rem; }
+  }
+
+  /* Ornamental separator */
+  .sep {
+    text-align: center;
+    color: var(--ghost);
+    margin: 1.5rem 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading-overlay">
+  <div class="loading-rune">✦</div>
+  <div class="loading-text">Summoning the Grimoire</div>
+</div>
+
+<!-- Background canvas -->
+<canvas id="bg-canvas"></canvas>
+<div id="bg-overlay"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">✦ Grimoire</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Discover</a></li>
+    <li><a onclick="showPage('quiz')">For Me</a></li>
+    <li><a>My Shelf</a></li>
+    <li><a>Community</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-gold" onclick="showPage('quiz')">Find My Books</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     HOME PAGE
+═══════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-eyebrow">Your next literary obsession awaits</div>
+    <h1 class="hero-title">Grimoire</h1>
+    <div class="hero-subtitle">A Sanctuary for the Devoted Reader</div>
+    <p class="hero-tagline">Where dark libraries whisper your next obsession, and every page turn opens a new world.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="showPage('quiz')">Discover Your Books</button>
+      <button class="btn-secondary">Browse All Genres</button>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <span>✦ &nbsp; CURATED FOR DARK SOULS &nbsp; ✦</span>
+      <div class="ornament-line"></div>
+    </div>
+
+    <div class="section-header">
+      <h2 class="section-title">Trending in the Dark</h2>
+      <a class="section-link">View All →</a>
+    </div>
+    <div class="books-grid" id="featured-grid"></div>
+  </section>
+
+  <section class="section" style="margin-top: -2rem;">
+    <div class="section-header">
+      <h2 class="section-title">Gothic & Fantasy</h2>
+      <a class="section-link">View All →</a>
+    </div>
+    <div class="books-grid" id="gothic-grid"></div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════════
+     QUIZ PAGE
+═══════════════════════════════════ -->
+<div id="page-quiz" class="page">
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <div class="hero-eyebrow" style="opacity:1;">The Oracle Speaks</div>
+      <h1 class="quiz-title">Tell Us Your Soul</h1>
+      <p class="quiz-subtitle">Answer truthfully, and we shall reveal the books written for you.</p>
+    </div>
+
+    <div class="step-indicator" id="step-indicator"></div>
+
+    <!-- Step 1: Genres -->
+    <div class="form-step active" id="step-1">
+      <div class="form-field">
+        <label class="form-label">Which worlds call to you?</label>
+        <div class="genre-chips" id="genre-chips">
+          <button class="genre-chip selected" data-genre="Dark Fantasy">Dark Fantasy</button>
+          <button class="genre-chip" data-genre="Gothic Horror">Gothic Horror</button>
+          <button class="genre-chip" data-genre="Epic Fantasy">Epic Fantasy</button>
+          <button class="genre-chip" data-genre="Romantasy">Romantasy</button>
+          <button class="genre-chip" data-genre="Sci-Fi">Sci-Fi</button>
+          <button class="genre-chip" data-genre="Historical Fiction">Historical Fiction</button>
+          <button class="genre-chip" data-genre="Mystery & Thriller">Mystery & Thriller</button>
+          <button class="genre-chip" data-genre="Literary Fiction">Literary Fiction</button>
+          <button class="genre-chip" data-genre="Paranormal Romance">Paranormal Romance</button>
+          <button class="genre-chip" data-genre="Horror">Horror</button>
+          <button class="genre-chip" data-genre="Mythology">Mythology</button>
+          <button class="genre-chip" data-genre="Dystopian">Dystopian</button>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <div></div>
+        <button class="btn-gold" onclick="nextStep(2)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Books & Authors -->
+    <div class="form-step" id="step-2">
+      <div class="form-field">
+        <label class="form-label">Books you've loved</label>
+        <input type="text" class="form-input" id="loved-books" placeholder="e.g. Fourth Wing, The Name of the Wind, Dracula…">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Authors who own your soul</label>
+        <input type="text" class="form-input" id="loved-authors" placeholder="e.g. Rebecca Yarros, Brandon Sanderson…">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Books you did not finish — and why</label>
+        <textarea class="form-input form-textarea" id="dnf-books" placeholder="e.g. Twilight — felt the romance was too slow…"></textarea>
+      </div>
+      <div class="form-nav">
+        <button class="back-btn" onclick="nextStep(1)">Previous</button>
+        <button class="btn-gold" onclick="nextStep(3)">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Vibe -->
+    <div class="form-step" id="step-3">
+      <div class="form-field">
+        <label class="form-label">Your reading vibe</label>
+
+        <div class="vibe-row">
+          <div class="vibe-label">Light & Cozy</div>
+          <input type="range" class="vibe-slider" min="1" max="10" value="7" id="vibe-dark">
+          <div class="vibe-label right">Dark & Brooding</div>
+        </div>
+        <div class="vibe-row">
+          <div class="vibe-label">Slow Burn</div>
+          <input type="range" class="vibe-slider" min="1" max="10" value="5" id="vibe-pace">
+          <div class="vibe-label right">Fast Paced</div>
+        </div>
+        <div class="vibe-row">
+          <div class="vibe-label">Solo Journey</div>
+          <input type="range" class="vibe-slider" min="1" max="10" value="6" id="vibe-romance">
+          <div class="vibe-label right">Deep Romance</div>
+        </div>
+        <div class="vibe-row">
+          <div class="vibe-label">Magic Soft</div>
+          <input type="range" class="vibe-slider" min="1" max="10" value="8" id="vibe-magic">
+          <div class="vibe-label right">Magic Hard</div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">Anything else about your soul?</label>
+        <textarea class="form-input form-textarea" id="extra-info" placeholder="I love morally grey characters, enemies-to-lovers, or found family…"></textarea>
+      </div>
+
+      <div class="form-nav">
+        <button class="back-btn" onclick="nextStep(2)">Previous</button>
+        <button class="btn-primary" onclick="generateRecs()" style="padding: 0.9rem 2.2rem; font-size: 0.8rem;">✦ Reveal My Books</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     RECOMMENDATIONS PAGE
+═══════════════════════════════════ -->
+<div id="page-recs" class="page">
+  <div class="recs-header">
+    <div class="hero-eyebrow" style="opacity:1; animation:none;">The Oracle Has Spoken</div>
+    <h1 class="recs-title">Your Destined Reads</h1>
+    <p class="recs-subtitle" style="font-family:var(--font-body); font-style:italic; color:var(--ghost); font-size:1rem;">Chosen from the shadows, just for you</p>
+  </div>
+  <div class="recs-grid" id="recs-grid"></div>
+  <div style="text-align:center; margin-top:3rem;">
+    <button class="btn-ghost" onclick="showPage('quiz')" style="margin-right:1rem;">← Refine My Taste</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     BOOK DETAIL PAGE
+═══════════════════════════════════ -->
+<div id="page-book" class="page">
+  <!-- Hero with dynamic background -->
+  <div class="book-hero" id="book-hero">
+    <div class="book-hero-content">
+      <div class="book-cover-large">
+        <img id="detail-cover" src="" alt="Book Cover">
+      </div>
+      <div class="book-hero-meta">
+        <span class="book-detail-genre" id="detail-genre"></span>
+        <h1 class="book-detail-title" id="detail-title"></h1>
+        <div class="book-detail-author" id="detail-author"></div>
+        <div class="book-detail-stats">
+          <div class="stat-item"><span class="stat-stars" id="detail-stars">★★★★☆</span><span id="detail-rating">4.2</span></div>
+          <div class="stat-item">📖 <span id="detail-pages"></span> pages</div>
+          <div class="stat-item">🗓️ <span id="detail-year"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="book-body">
+    <!-- Main column -->
+    <div class="book-main">
+      <!-- Back -->
+      <button class="back-btn mb-2" onclick="history.back(); showPage('recs')" style="margin-bottom:2rem;">Back to Recommendations</button>
+
+      <!-- Synopsis -->
+      <div class="book-section">
+        <div class="book-section-title">The Story</div>
+        <p class="book-synopsis" id="detail-synopsis"></p>
+      </div>
+
+      <!-- Rating -->
+      <div class="book-section">
+        <div class="book-section-title">Your Relationship With This Book</div>
+        <div class="rating-widget">
+          <div style="margin-bottom:0.8rem; font-family:var(--font-title); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ghost);">Reading Status</div>
+          <div class="status-buttons">
+            <button class="status-btn" onclick="setStatus(this, 'want-to-read')">Want to Read</button>
+            <button class="status-btn" onclick="setStatus(this, 'reading')">Currently Reading</button>
+            <button class="status-btn active" onclick="setStatus(this, 'finished')">Finished</button>
+            <button class="status-btn" onclick="setStatus(this, 'dnf')">Did Not Finish</button>
+          </div>
+          <div style="margin-bottom:0.8rem; font-family:var(--font-title); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ghost);">Your Rating</div>
+          <div class="star-rating" id="star-rating">
+            <span class="star lit" onclick="setStar(1)">★</span>
+            <span class="star lit" onclick="setStar(2)">★</span>
+            <span class="star lit" onclick="setStar(3)">★</span>
+            <span class="star lit" onclick="setStar(4)">★</span>
+            <span class="star" onclick="setStar(5)">★</span>
+          </div>
+          <textarea class="comment-input" id="my-review" placeholder="Write your thoughts about this book…" style="margin-top:0.5rem;"></textarea>
+          <button class="btn-gold" onclick="submitReview()" style="font-size:0.72rem; padding:0.5rem 1.2rem;">Save Review</button>
+        </div>
+      </div>
+
+      <!-- Community comments -->
+      <div class="book-section">
+        <div class="book-section-title">From the Community</div>
+        <div id="comments-list"></div>
+        <div style="margin-top:1.5rem;">
+          <div style="font-family:var(--font-title); font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ghost); margin-bottom:0.7rem;">Leave a Comment</div>
+          <textarea class="comment-input" id="new-comment" placeholder="Share your thoughts with fellow readers…"></textarea>
+          <button class="btn-ghost" onclick="addComment()" style="font-size:0.72rem; padding:0.5rem 1.2rem;">Post Comment</button>
+        </div>
+      </div>
+
+      <!-- Inspired Playlist -->
+      <div class="book-section">
+        <div class="book-section-title">Book-Inspired Playlist</div>
+        <div style="margin-bottom:0.8rem; font-family:var(--font-body); font-style:italic; font-size:0.9rem; color:var(--ghost);">Soundtrack for your reading journey</div>
+        <div id="playlist-container"></div>
+        <div style="margin-top:1rem;">
+          <a id="spotify-link" href="#" target="_blank" style="font-family:var(--font-ui); font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:#1DB954; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; border:1px solid rgba(29,185,84,0.3); padding:0.5rem 1rem; border-radius:1px; transition:all 0.2s;" onmouseover="this.style.background='rgba(29,185,84,0.08)'" onmouseout="this.style.background='none'">
+            ♫ Open Full Playlist on Spotify
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="book-sidebar">
+      <!-- Fan art -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Fan Art & Illustrations</div>
+        <div class="fanart-grid" id="fanart-grid"></div>
+        <div style="margin-top:0.8rem; font-family:var(--font-ui); font-size:0.65rem; letter-spacing:0.08em; color:var(--ghost);">Fan art sourced from DeviantArt & Pinterest</div>
+      </div>
+
+      <!-- Book details -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Details</div>
+        <table style="width:100%; font-family:var(--font-body); font-size:0.88rem;">
+          <tr><td style="color:var(--ghost); padding:0.3rem 0;">Publisher</td><td style="color:var(--pale); text-align:right;" id="d-publisher">—</td></tr>
+          <tr><td style="color:var(--ghost); padding:0.3rem 0;">Series</td><td style="color:var(--pale); text-align:right;" id="d-series">—</td></tr>
+          <tr><td style="color:var(--ghost); padding:0.3rem 0;">Pages</td><td style="color:var(--pale); text-align:right;" id="d-pages">—</td></tr>
+          <tr><td style="color:var(--ghost); padding:0.3rem 0;">Published</td><td style="color:var(--pale); text-align:right;" id="d-year">—</td></tr>
+          <tr><td style="color:var(--ghost); padding:0.3rem 0;">Genre</td><td style="color:var(--pale); text-align:right;" id="d-genre">—</td></tr>
+        </table>
+      </div>
+
+      <!-- Similar books -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">You May Also Like</div>
+        <div id="similar-books"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     AI CHAT ASSISTANT
+═══════════════════════════════════ -->
+<button id="ai-chat-btn" onclick="toggleChat()" title="Ask the Oracle">🔮</button>
+
+<div id="ai-chat-panel">
+  <div class="chat-panel-header">
+    <div class="chat-panel-title">
+      <div class="chat-dot"></div>
+      The Oracle — Book AI
+    </div>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-message ai">
+      Welcome, seeker. I am the Oracle of Grimoire. <br><br>
+      Tell me what you seek — a mood, a trope, an author, a feeling — and I shall summon books from the depths for you.
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chat-input" placeholder="e.g. dark enemies-to-lovers…" onkeydown="if(event.key==='Enter') sendChatMessage()">
+    <button class="chat-send" onclick="sendChatMessage()">→</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+
+const BOOKS = [
+  {
+    id: 1,
+    title: "Fourth Wing",
+    author: "Rebecca Yarros",
+    genre: "Romantasy",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1679362786i/61431922.jpg",
+    rating: 4.5,
+    pages: 498,
+    year: 2023,
+    publisher: "Red Tower Books",
+    series: "The Empyrean #1",
+    synopsis: "Twenty-year-old Violet Sorrengail was supposed to enter the Scribe Quadrant, but her mother—the commanding general—forces her to join the most elite and deadly unit: the Riders Quadrant. There, she faces dragons, deadly classmates, and Xaden Riorson, the most powerful—and dangerous—rider to have ever lived.",
+    tags: ["dragons", "war college", "enemies-to-lovers", "magic"],
+    theme: "dragons",
+    bgColors: ["#1a0505", "#2d0a0a", "#0d1a2d"],
+    accentColor: "#c8401a",
+    playlist: [
+      { name: "Dragon Rider", artist: "Peter Gundry", duration: "4:12", emoji: "🐉" },
+      { name: "Fire and War", artist: "Brand X Music", duration: "3:47", emoji: "🔥" },
+      { name: "Whispers of the Ancients", artist: "Audiomachine", duration: "5:03", emoji: "✨" },
+      { name: "Storms of Navarre", artist: "Revolt Production Music", duration: "3:22", emoji: "⚡" },
+      { name: "Wings of Shadow", artist: "Two Steps From Hell", duration: "4:55", emoji: "🌑" },
+    ],
+    spotifyLink: "https://open.spotify.com/playlist/37i9dQZF1DX0mASzGpVwJX",
+    fanartColors: ["#8b1a1a", "#2d1b69", "#1a3a1a", "#3d1a0d"],
+    comments: [
+      { user: "EllaReads", avatar: "ER", text: "Xaden had me absolutely feral. The dragon bonding scenes gave me chills.", date: "2 days ago" },
+      { user: "NightReader", avatar: "NR", text: "I read this in one sitting. The plot twists hit like a freight train.", date: "5 days ago" },
+      { user: "BookWitch", avatar: "BW", text: "The world-building is stunning. I feel like I'm actually at Basgiath War College.", date: "1 week ago" },
+    ],
+    similar: [2, 3, 5]
+  },
+  {
+    id: 2,
+    title: "A Court of Thorns and Roses",
+    author: "Sarah J. Maas",
+    genre: "Dark Fantasy",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1451905395i/16096824.jpg",
+    rating: 4.3,
+    pages: 419,
+    year: 2015,
+    publisher: "Bloomsbury",
+    series: "ACOTAR #1",
+    synopsis: "A young mortal huntress kills a wolf in the woods and is dragged to a magical land as punishment. But this world of Fae is more beautiful—and more perilous—than she ever imagined, and she discovers she is caught in the middle of a centuries-old conflict that could upend the fragile peace in the land.",
+    tags: ["fae", "curses", "beauty and beast", "romance"],
+    theme: "fae",
+    bgColors: ["#0d1a0d", "#1a0d1a", "#0a0a1a"],
+    accentColor: "#9b59b6",
+    playlist: [
+      { name: "Under the Mountain", artist: "Peter Gundry", duration: "4:30", emoji: "🌿" },
+      { name: "Faerie Court", artist: "Adrian Von Ziegler", duration: "5:14", emoji: "✨" },
+      { name: "Enchanted Forest", artist: "Celtic Woman", duration: "3:58", emoji: "🌙" },
+      { name: "Spring Court", artist: "Brunuhville", duration: "4:22", emoji: "🌸" },
+    ],
+    spotifyLink: "https://open.spotify.com/playlist/37i9dQZF1DX1s9knjP51Oa",
+    fanartColors: ["#0d1a0d", "#1a0d1a", "#0a1a0a", "#1a1a0a"],
+    comments: [
+      { user: "FaerieFan", avatar: "FF", text: "The Spring Court description had me absolutely mesmerized. SJM's prose is unmatched.", date: "3 days ago" },
+      { user: "MidnightPage", avatar: "MP", text: "Rhysand is my roman empire. The Under the Mountain sequences are terrifying in the best way.", date: "1 week ago" },
+    ],
+    similar: [1, 3, 4]
+  },
+  {
+    id: 3,
+    title: "The Name of the Wind",
+    author: "Patrick Rothfuss",
+    genre: "Epic Fantasy",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1270352123i/186074.jpg",
+    rating: 4.6,
+    pages: 662,
+    year: 2007,
+    publisher: "DAW Books",
+    series: "Kingkiller Chronicle #1",
+    synopsis: "The tale of Kvothe, from his childhood in a troupe of traveling players to his years spent as a near-legendary student at the University where he learns the arcane arts, to his life as a wandering musician. A frame story of a legendary figure recounting his own life in three days.",
+    tags: ["magic university", "bard", "legend", "coming of age"],
+    theme: "university",
+    bgColors: ["#0a0f1a", "#0f0a1a", "#1a1000"],
+    accentColor: "#c8a84b",
+    playlist: [
+      { name: "The Waystone Inn", artist: "Peter Gundry", duration: "4:48", emoji: "🍺" },
+      { name: "The University", artist: "Vindsvept", duration: "3:55", emoji: "📚" },
+      { name: "Kvothe's Lute", artist: "David Lanz", duration: "5:20", emoji: "🎵" },
+      { name: "Tarbean Rain", artist: "Adrian Von Ziegler", duration: "4:11", emoji: "🌧️" },
+    ],
+    spotifyLink: "https://open.spotify.com/playlist/37i9dQZF1DX5trt9i14X7j",
+    fanartColors: ["#0a0f1a", "#1a1000", "#0f1a0f", "#1a0a00"],
+    comments: [
+      { user: "LoreSeeker", avatar: "LS", text: "The prose is like music. I read pages aloud sometimes just to hear the rhythm.", date: "4 days ago" },
+      { user: "WindReader", avatar: "WR", text: "Kvothe is one of the most compelling narrators in fiction. The frame story is genius.", date: "2 weeks ago" },
+    ],
+    similar: [4, 5, 6]
+  },
+  {
+    id: 4,
+    title: "Dracula",
+    author: "Bram Stoker",
+    genre: "Gothic Horror",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1387151694i/17245.jpg",
+    rating: 4.1,
+    pages: 418,
+    year: 1897,
+    publisher: "Archibald Constable",
+    series: "Standalone",
+    synopsis: "A chilling tale told through journal entries, letters, and newspaper clippings. Jonathan Harker travels to Transylvania to assist a nobleman named Count Dracula, and gradually realizes the Count is a vampire. What follows is a harrowing pursuit across Europe to vanquish this ancient evil.",
+    tags: ["vampires", "gothic", "epistolary", "classic horror"],
+    theme: "castle",
+    bgColors: ["#0a0000", "#1a0505", "#050010"],
+    accentColor: "#8b1a2c",
+    playlist: [
+      { name: "Transylvanian Nights", artist: "Midnight Syndicate", duration: "5:30", emoji: "🦇" },
+      { name: "Castle Dracula", artist: "Peter Gundry", duration: "4:15", emoji: "🏰" },
+      { name: "Mina's Lament", artist: "Sarah Brightman", duration: "3:48", emoji: "🌹" },
+      { name: "Fog of London", artist: "Nox Arcana", duration: "4:52", emoji: "🌫️" },
+    ],
+    spotifyLink: "https://open.spotify.com/playlist/37i9dQZF1DX2Od2pGLBZcR",
+    fanartColors: ["#0a0000", "#1a0505", "#050010", "#1a0010"],
+    comments: [
+      { user: "VampireLore", avatar: "VL", text: "The epistolary format makes it terrifyingly real. Van Helsing is my favorite character.", date: "1 week ago" },
+      { user: "GothicReader", avatar: "GR", text: "The Castle Dracula opening chapters are some of the most atmospheric writing ever.", date: "3 weeks ago" },
+    ],
+    similar: [5, 6, 7]
+  },
+  {
+    id: 5,
+    title: "The Priory of the Orange Tree",
+    author: "Samantha Shannon",
+    genre: "Epic Fantasy",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1531238988i/38654126.jpg",
+    rating: 4.2,
+    pages: 848,
+    year: 2019,
+    publisher: "Bloomsbury",
+    series: "Standalone",
+    synopsis: "An epic standalone fantasy featuring queens, dragon-riders, and an ancient evil awakening. Three women across different realms — a queen fearing treachery, a dragonrider from the East, and a lady-in-waiting — must unite to defeat an age-old enemy before darkness consumes everything.",
+    tags: ["dragons", "female protagonist", "LGBTQ+", "political intrigue"],
+    theme: "ocean-dragons",
+    bgColors: ["#001a1a", "#00101a", "#0a001a"],
+    accentColor: "#1a7a7a",
+    playlist: [
+      { name: "The Orange Tree", artist: "Peter Gundry", duration: "4:33", emoji: "🌊" },
+      { name: "Sea Dragons", artist: "Audiomachine", duration: "5:01", emoji: "🐲" },
+      { name: "The Nameless One", artist: "Two Steps From Hell", duration: "4:47", emoji: "🌑" },
+      { name: "Queendom", artist: "Brand X Music", duration: "3:39", emoji: "👑" },
+    ],
+    spotifyLink: "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0",
+    fanartColors: ["#001a1a", "#00101a", "#0a001a", "#001a0a"],
+    comments: [
+      { user: "DragonLore", avatar: "DL", text: "The world-building is breathtaking. The Eastern vs Western dragon lore is so unique.", date: "5 days ago" },
+    ],
+    similar: [1, 2, 3]
+  },
+  {
+    id: 6,
+    title: "Interview with the Vampire",
+    author: "Anne Rice",
+    genre: "Gothic Horror",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1629478218i/43763.jpg",
+    rating: 4.0,
+    pages: 342,
+    year: 1976,
+    publisher: "Alfred A. Knopf",
+    series: "Vampire Chronicles #1",
+    synopsis: "Louis, a guilt-ridden vampire, recounts two centuries of his existence to a young reporter. Transformed by the magnetic Lestat, Louis struggles with his nature while forming a complex bond with Claudia, a child-vampire. A profound meditation on immortality, loss, and what it means to be human.",
+    tags: ["vampires", "gothic", "philosophy", "New Orleans"],
+    theme: "new-orleans-night",
+    bgColors: ["#050010", "#0a0005", "#1a1000"],
+    accentColor: "#6b1a8b",
+    playlist: [
+      { name: "New Orleans Nocturne", artist: "Midnight Syndicate", duration: "4:45", emoji: "🎺" },
+      { name: "Lestat's Theme", artist: "Elliot Goldenthal", duration: "3:28", emoji: "🕯️" },
+      { name: "Louis's Lament", artist: "Peter Gundry", duration: "5:12", emoji: "🌹" },
+      { name: "The Theater of Vampires", artist: "Nox Arcana", duration: "4:30", emoji: "🎭" },
+    ],
+    spotifyLink: "https://open.spotify.com/playlist/37i9dQZF1DX2Od2pGLBZcR",
+    fanartColors: ["#050010", "#0a0005", "#1a1000", "#05000a"],
+    comments: [
+      { user: "RiceReader", avatar: "RR", text: "Anne Rice invented the brooding vampire as literary genre. Louis is an eternal tragedy.", date: "2 weeks ago" },
+    ],
+    similar: [4, 3, 7]
+  },
+  {
+    id: 7,
+    title: "The Way of Kings",
+    author: "Brandon Sanderson",
+    genre: "Epic Fantasy",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1659905828i/7235533.jpg",
+    rating: 4.7,
+    pages: 1007,
+    year: 2010,
+    publisher: "Tor Books",
+    series: "The Stormlight Archive #1",
+    synopsis: "On a world scarred by devastating storms, three powerful people are drawn into a conflict spanning millennia. Kaladin, a slave-turned-soldier, discovers powers that haven't been seen in ages. Shallan, a scholar, seeks secrets hidden in ancient texts. And Dalinar must unite a broken people against an ancient evil.",
+    tags: ["epic magic system", "war", "redemption", "massive world"],
+    theme: "storms-sky",
+    bgColors: ["#001020", "#000a20", "#001010"],
+    accentColor: "#2e6ab8",
+    playlist: [
+      { name: "The Stormwall", artist: "Audiomachine", duration: "5:45", emoji: "⛈️" },
+      { name: "Shardblades", artist: "Two Steps From Hell", duration: "4:22", emoji: "⚔️" },
+      { name: "Kaladin's Theme", artist: "Peter Gundry", duration: "4:58", emoji: "💙" },
+      { name: "The Knights Radiant", artist: "Brand X Music", duration: "3:55", emoji: "✨" },
+    ],
+    spotifyLink: "https://open.spotify.com/playlist/37i9dQZF1DX2L0iB23Enbq",
+    fanartColors: ["#001020", "#000a20", "#001010", "#0a0020"],
+    comments: [
+      { user: "Sanderfan", avatar: "SF", text: "The magic system is genius. Stormlight is unlike anything else in fantasy.", date: "1 day ago" },
+      { user: "WordsOfRadiance", avatar: "WR", text: "Journey before destination. This book changed how I think about fantasy.", date: "3 days ago" },
+    ],
+    similar: [3, 5, 2]
+  },
+  {
+    id: 8,
+    title: "Mexican Gothic",
+    author: "Silvia Moreno-Garcia",
+    genre: "Gothic Horror",
+    cover: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1574131213i/53152636.jpg",
+    rating: 3.9,
+    pages: 301,
+    year: 2020,
+    publisher: "Del Rey",
+    series: "Standalone",
+    synopsis: "Set in 1950s Mexico, glamorous socialite Noemí Taboada travels to the remote mansion of High Place to rescue her cousin. What she finds is a decaying English family, a husband who keeps her cousin drugged and isolated, and a house that seems to have a horrifying dark past alive within its walls.",
+    tags: ["gothic horror", "1950s Mexico", "dark mansion", "feminist"],
+    theme: "fog-mansion",
+    bgColors: ["#0a0500", "#050a00", "#000a05"],
+    accentColor: "#5a7a1a",
+    playlist: [
+      { name: "High Place", artist: "Nox Arcana", duration: "4:17", emoji: "🌫️" },
+      { name: "Mexican Night", artist: "Gustavo Santaolalla", duration: "3:42", emoji: "🌺" },
+      { name: "Mushroom Dreams", artist: "Peter Gundry", duration: "5:08", emoji: "🍄" },
+      { name: "The English Horror", artist: "Midnight Syndicate", duration: "4:33", emoji: "🏚️" },
+    ],
+    spotifyLink: "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0",
+    fanartColors: ["#0a0500", "#050a00", "#000a05", "#0a0a00"],
+    comments: [
+      { user: "LatinGothic", avatar: "LG", text: "The atmosphere is suffocating in the best possible way. High Place is a character itself.", date: "4 days ago" },
+    ],
+    similar: [4, 6, 2]
+  }
+];
+
+const FEATURED_IDS = [1, 2, 7, 3, 4, 8];
+const GOTHIC_IDS = [4, 6, 8, 3, 5, 7];
+
+// ═══════════════════════════════════════════════════
+// PAGE MANAGEMENT
+// ═══════════════════════════════════════════════════
+
+let currentPage = 'home';
+let currentBook = null;
+
+function showPage(name, data) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  currentPage = name;
+  window.scrollTo(0, 0);
+
+  if (name === 'home') renderHome();
+  if (name === 'book' && data) renderBookDetail(data);
+}
+
+// ═══════════════════════════════════════════════════
+// CANVAS BACKGROUND
+// ═══════════════════════════════════════════════════
+
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let bgMode = 'home';
+let bgTheme = null;
+let animFrame;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor(theme) {
+    this.reset(theme);
+  }
+  reset(theme) {
+    this.theme = theme || bgMode;
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.opacity = Math.random() * 0.6 + 0.1;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3 - 0.1;
+    this.life = 1;
+    this.decay = Math.random() * 0.002 + 0.001;
+
+    if (this.theme === 'dragons') {
+      this.color = Math.random() > 0.5 ? '#ff4400' : '#ff8800';
+      this.size = Math.random() * 3 + 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5 - 0.3;
+      this.vx = (Math.random() - 0.5) * 0.8;
+    } else if (this.theme === 'castle') {
+      this.color = Math.random() > 0.7 ? '#8b1a2c' : '#aaa';
+      this.vy = -(Math.random() * 0.4 + 0.1);
+      this.type = 'bat';
+      if (Math.random() > 0.9) this.type = 'bat';
+    } else if (this.theme === 'storms-sky') {
+      this.color = Math.random() > 0.6 ? '#4488ff' : '#aaccff';
+      this.vx = (Math.random() - 0.5) * 2;
+      this.vy = Math.random() * 1.5 + 0.5;
+    } else if (this.theme === 'fae') {
+      this.color = `hsl(${Math.random() * 60 + 260}, 70%, 70%)`;
+      this.vy = -(Math.random() * 0.3 + 0.1);
+      this.vx = Math.sin(this.x * 0.01) * 0.3;
+    } else {
+      this.color = `hsl(${Math.random() * 60 + 220}, 30%, ${Math.random() * 20 + 40}%)`;
+      this.vy = -(Math.random() * 0.3 + 0.05);
+    }
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life -= this.decay;
+    if (this.x < 0) this.x = canvas.width;
+    if (this.x > canvas.width) this.x = 0;
+    if (this.y < -20 || this.life <= 0) {
+      this.y = canvas.height + 10;
+      this.x = Math.random() * canvas.width;
+      this.life = 1;
+    }
+  }
+  draw() {
+    ctx.globalAlpha = this.life * this.opacity;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+// Dragon silhouettes
+function drawDragon(x, y, scale, opacity) {
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = 'rgba(50,5,5,0.7)';
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  ctx.beginPath();
+  // Simple dragon body silhouette
+  ctx.ellipse(0, 0, 25, 8, 0, 0, Math.PI * 2);
+  ctx.fill();
+  // Wing
+  ctx.beginPath();
+  ctx.moveTo(-10, -5);
+  ctx.bezierCurveTo(-30, -30, -50, -20, -40, -5);
+  ctx.bezierCurveTo(-30, 0, -15, -2, -10, -5);
+  ctx.fill();
+  // Wing 2
+  ctx.beginPath();
+  ctx.moveTo(10, -5);
+  ctx.bezierCurveTo(30, -30, 50, -20, 40, -5);
+  ctx.bezierCurveTo(30, 0, 15, -2, 10, -5);
+  ctx.fill();
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+let dragons = [
+  { x: 200, y: 150, vx: 0.8, vy: -0.2, scale: 1.2, opacity: 0.4 },
+  { x: 800, y: 300, vx: -0.6, vy: 0.1, scale: 0.8, opacity: 0.25 },
+  { x: 500, y: 80, vx: 1.0, vy: 0.3, scale: 1.5, opacity: 0.35 },
+];
+
+function updateDragons() {
+  dragons.forEach(d => {
+    d.x += d.vx;
+    d.y += d.vy;
+    if (d.x > canvas.width + 100) d.x = -100;
+    if (d.x < -100) d.x = canvas.width + 100;
+    if (d.y < 30) d.vy = Math.abs(d.vy);
+    if (d.y > canvas.height * 0.6) d.vy = -Math.abs(d.vy);
+    drawDragon(d.x, d.y, d.scale, d.opacity);
+  });
+}
+
+// Bats
+let bats = Array.from({length: 8}, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight * 0.6,
+  vx: (Math.random() - 0.5) * 1.5,
+  vy: (Math.random() - 0.5) * 0.8,
+  wingPhase: Math.random() * Math.PI * 2,
+  scale: Math.random() * 0.5 + 0.3
+}));
+
+function drawBat(x, y, scale, wingPhase, opacity) {
+  const ws = Math.sin(wingPhase) * 6;
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = '#0a0005';
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  ctx.beginPath();
+  ctx.ellipse(0, 0, 5, 3, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(-2, 0);
+  ctx.bezierCurveTo(-8, -8 + ws, -14, -6 + ws, -12, 2);
+  ctx.bezierCurveTo(-8, 4, -4, 2, -2, 0);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(2, 0);
+  ctx.bezierCurveTo(8, -8 + ws, 14, -6 + ws, 12, 2);
+  ctx.bezierCurveTo(8, 4, 4, 2, 2, 0);
+  ctx.fill();
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+function updateBats() {
+  bats.forEach(b => {
+    b.x += b.vx;
+    b.y += b.vy;
+    b.wingPhase += 0.15;
+    if (b.x < -30) b.x = canvas.width + 30;
+    if (b.x > canvas.width + 30) b.x = -30;
+    if (b.y < 20) b.vy = Math.abs(b.vy);
+    if (b.y > canvas.height * 0.7) b.vy = -Math.abs(b.vy);
+    drawBat(b.x, b.y, b.scale, b.wingPhase, 0.5);
+  });
+}
+
+// Rain/lightning for storms
+let raindrops = Array.from({length: 150}, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  speed: Math.random() * 3 + 2,
+  len: Math.random() * 15 + 5,
+  opacity: Math.random() * 0.3 + 0.1
+}));
+
+function drawRain() {
+  ctx.strokeStyle = '#4488ff';
+  raindrops.forEach(r => {
+    ctx.globalAlpha = r.opacity;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(r.x, r.y);
+    ctx.lineTo(r.x - 2, r.y + r.len);
+    ctx.stroke();
+    r.y += r.speed;
+    r.x -= 1;
+    if (r.y > canvas.height) { r.y = -10; r.x = Math.random() * canvas.width; }
+  });
+  ctx.globalAlpha = 1;
+}
+
+// Stars for fae
+function drawStars() {
+  for (let i = 0; i < 3; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height * 0.8;
+    const r = Math.random() * 1.5;
+    ctx.globalAlpha = Math.random() * 0.3;
+    ctx.fillStyle = '#ddb8ff';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+// Background gradient based on theme
+function drawBackground(theme, colors) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const grad = ctx.createRadialGradient(
+    canvas.width * 0.5, canvas.height * 0.3, 0,
+    canvas.width * 0.5, canvas.height * 0.5, canvas.width * 0.8
+  );
+
+  if (theme === 'dragons') {
+    grad.addColorStop(0, '#1a0505');
+    grad.addColorStop(0.4, '#0d0a0e');
+    grad.addColorStop(1, '#050005');
+  } else if (theme === 'castle') {
+    grad.addColorStop(0, '#050010');
+    grad.addColorStop(0.5, '#0a0005');
+    grad.addColorStop(1, '#000000');
+  } else if (theme === 'storms-sky') {
+    grad.addColorStop(0, '#000f1a');
+    grad.addColorStop(0.4, '#000510');
+    grad.addColorStop(1, '#000000');
+  } else if (theme === 'fae') {
+    grad.addColorStop(0, '#0d0a1a');
+    grad.addColorStop(0.5, '#0a0d15');
+    grad.addColorStop(1, '#050008');
+  } else if (theme === 'ocean-dragons') {
+    grad.addColorStop(0, '#001010');
+    grad.addColorStop(0.5, '#00050a');
+    grad.addColorStop(1, '#000005');
+  } else if (theme === 'new-orleans-night') {
+    grad.addColorStop(0, '#060010');
+    grad.addColorStop(0.5, '#0a0005');
+    grad.addColorStop(1, '#000000');
+  } else if (theme === 'fog-mansion') {
+    grad.addColorStop(0, '#050a00');
+    grad.addColorStop(0.5, '#0a0500');
+    grad.addColorStop(1, '#000000');
+  } else if (theme === 'university') {
+    grad.addColorStop(0, '#0a0800');
+    grad.addColorStop(0.5, '#080a10');
+    grad.addColorStop(1, '#000000');
+  } else {
+    grad.addColorStop(0, '#120d15');
+    grad.addColorStop(0.5, '#0d0a0e');
+    grad.addColorStop(1, '#080509');
+  }
+
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+let particleCount = 120;
+
+function initParticles(theme) {
+  particles = Array.from({length: particleCount}, () => new Particle(theme));
+}
+
+let lastTheme = 'home';
+
+function animate() {
+  const theme = bgTheme || 'home';
+  drawBackground(theme, null);
+
+  if (theme === 'dragons') updateDragons();
+  if (theme === 'castle') updateBats();
+  if (theme === 'storms-sky') drawRain();
+  if (theme === 'fae') drawStars();
+
+  particles.forEach(p => { p.update(); p.draw(); });
+
+  animFrame = requestAnimationFrame(animate);
+}
+
+function setTheme(theme) {
+  if (bgTheme === theme) return;
+  bgTheme = theme;
+  initParticles(theme);
+}
+
+initParticles('home');
+animate();
+
+// ═══════════════════════════════════════════════════
+// HOME RENDER
+// ═══════════════════════════════════════════════════
+
+function renderHome() {
+  setTheme('home');
+  renderBookGrid('featured-grid', FEATURED_IDS);
+  renderBookGrid('gothic-grid', GOTHIC_IDS);
+}
+
+function renderBookGrid(containerId, ids) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = ids.map(id => {
+    const book = BOOKS.find(b => b.id === id);
+    if (!book) return '';
+    return `
+      <div class="book-card" onclick="openBook(${book.id})">
+        <div class="book-cover">
+          <img class="book-cover-img" src="${book.cover}" alt="${book.title}" 
+               onerror="this.src=''; this.parentElement.style.background='linear-gradient(135deg, ${book.bgColors[0]}, ${book.bgColors[1]})';">
+          <div class="book-cover-overlay">
+            <span class="book-cover-peek">Open Book →</span>
+          </div>
+        </div>
+        <div class="book-title">${book.title}</div>
+        <div class="book-author">${book.author}</div>
+        <span class="book-genre-tag">${book.genre}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// QUIZ LOGIC
+// ═══════════════════════════════════════════════════
+
+let currentStep = 1;
+const totalSteps = 3;
+
+function initStepIndicator() {
+  const ind = document.getElementById('step-indicator');
+  ind.innerHTML = Array.from({length: totalSteps}, (_, i) => 
+    `<div class="step-dot ${i === 0 ? 'active' : ''}" id="dot-${i+1}"></div>`
+  ).join('');
+}
+
+function updateStepIndicator(step) {
+  for (let i = 1; i <= totalSteps; i++) {
+    const dot = document.getElementById('dot-' + i);
+    if (!dot) return;
+    dot.className = 'step-dot' + (i === step ? ' active' : i < step ? ' done' : '');
+  }
+}
+
+function nextStep(step) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  currentStep = step;
+  document.getElementById('step-' + currentStep).classList.add('active');
+  updateStepIndicator(step);
+  window.scrollTo(0, 0);
+}
+
+// Genre chip toggle
+document.querySelectorAll('.genre-chip').forEach(chip => {
+  chip.addEventListener('click', () => chip.classList.toggle('selected'));
+});
+
+function generateRecs() {
+  const selectedGenres = Array.from(document.querySelectorAll('.genre-chip.selected'))
+    .map(c => c.dataset.genre);
+
+  // Filter and score books
+  let scored = BOOKS.map(book => {
+    let score = Math.random() * 2;
+    if (selectedGenres.includes(book.genre)) score += 5;
+    selectedGenres.forEach(g => {
+      if (book.tags.some(t => g.toLowerCase().includes(t.toLowerCase().split(' ')[0]))) score += 1;
+    });
+    return { book, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+
+  // Render recs
+  const grid = document.getElementById('recs-grid');
+  grid.innerHTML = scored.slice(0, 8).map(({ book }) => `
+    <div class="book-card" onclick="openBook(${book.id})" style="animation: fadeUp 0.5s ${scored.indexOf({book}) * 0.05}s both;">
+      <div class="book-cover">
+        <img class="book-cover-img" src="${book.cover}" alt="${book.title}"
+             onerror="this.src=''; this.parentElement.style.background='linear-gradient(135deg, ${book.bgColors[0]}, ${book.bgColors[1]})';">
+        <div class="book-cover-overlay">
+          <span class="book-cover-peek">Explore →</span>
+        </div>
+      </div>
+      <div class="book-title">${book.title}</div>
+      <div class="book-author">${book.author}</div>
+      <span class="book-genre-tag">${book.genre}</span>
+    </div>
+  `).join('');
+
+  showPage('recs');
+}
+
+// ═══════════════════════════════════════════════════
+// BOOK DETAIL
+// ═══════════════════════════════════════════════════
+
+function openBook(id) {
+  const book = BOOKS.find(b => b.id === id);
+  if (!book) return;
+  currentBook = book;
+  setTheme(book.theme);
+  showPage('book', book);
+}
+
+function renderBookDetail(book) {
+  // Hero
+  document.getElementById('detail-cover').src = book.cover;
+  document.getElementById('detail-cover').onerror = () => {};
+  document.getElementById('detail-genre').textContent = book.genre;
+  document.getElementById('detail-title').textContent = book.title;
+  document.getElementById('detail-author').textContent = `by ${book.author}`;
+  document.getElementById('detail-rating').textContent = book.rating;
+  document.getElementById('detail-pages').textContent = book.pages;
+  document.getElementById('detail-year').textContent = book.year;
+
+  const stars = '★'.repeat(Math.round(book.rating)) + '☆'.repeat(5 - Math.round(book.rating));
+  document.getElementById('detail-stars').textContent = stars;
+
+  // Synopsis
+  document.getElementById('detail-synopsis').textContent = book.synopsis;
+
+  // Sidebar details
+  document.getElementById('d-publisher').textContent = book.publisher;
+  document.getElementById('d-series').textContent = book.series;
+  document.getElementById('d-pages').textContent = book.pages;
+  document.getElementById('d-year').textContent = book.year;
+  document.getElementById('d-genre').textContent = book.genre;
+
+  // Playlist
+  const playlist = document.getElementById('playlist-container');
+  playlist.innerHTML = book.playlist.map((track, i) => `
+    <div class="playlist-track">
+      <div class="track-num">${i + 1}</div>
+      <div class="track-art">${track.emoji}</div>
+      <div class="track-info">
+        <div class="track-name">${track.name}</div>
+        <div class="track-artist">${track.artist}</div>
+      </div>
+      <div class="track-duration">${track.duration}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('spotify-link').href = book.spotifyLink;
+
+  // Fan art (colored placeholder divs simulating art)
+  const fanartGrid = document.getElementById('fanart-grid');
+  const artTitles = [
+    `${book.title} — Cover Art`,
+    `${book.author} Character`,
+    `${book.title} Scene`,
+    `Fan Illustration`
+  ];
+  fanartGrid.innerHTML = book.fanartColors.map((color, i) => `
+    <div class="fanart-item" style="background: linear-gradient(135deg, ${color}, ${book.bgColors[i % book.bgColors.length]});">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0.5rem;text-align:center;">
+        <div style="font-size:1.5rem;margin-bottom:0.3rem;">${['🎨','⚔️','🐉','✨'][i]}</div>
+        <div style="font-family:var(--font-ui);font-size:0.55rem;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;">${artTitles[i]}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Comments
+  const commentsList = document.getElementById('comments-list');
+  commentsList.innerHTML = book.comments.map(c => `
+    <div class="comment">
+      <div class="comment-header">
+        <div class="comment-avatar">${c.avatar}</div>
+        <div class="comment-author">${c.user}</div>
+        <div class="comment-date">${c.date}</div>
+      </div>
+      <div class="comment-text">${c.text}</div>
+    </div>
+  `).join('');
+
+  // Similar books
+  const similarEl = document.getElementById('similar-books');
+  similarEl.innerHTML = book.similar.map(id => {
+    const b = BOOKS.find(x => x.id === id);
+    if (!b) return '';
+    return `
+      <div onclick="openBook(${b.id})" style="display:flex;gap:0.8rem;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--smoke);cursor:pointer;transition:opacity 0.2s;" onmouseover="this.style.opacity=0.7" onmouseout="this.style.opacity=1">
+        <div style="width:36px;height:54px;border-radius:1px;overflow:hidden;flex-shrink:0;background:linear-gradient(135deg,${b.bgColors[0]},${b.bgColors[1]});">
+          <img src="${b.cover}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+        </div>
+        <div>
+          <div style="font-family:var(--font-title);font-size:0.8rem;color:var(--pale);">${b.title}</div>
+          <div style="font-family:var(--font-body);font-style:italic;font-size:0.75rem;color:var(--ghost);">${b.author}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Reset rating UI
+  setStar(4);
+  document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.status-btn:nth-child(3)').classList.add('active');
+  document.getElementById('my-review').value = '';
+  document.getElementById('new-comment').value = '';
+}
+
+// Rating interactions
+function setStatus(btn, status) {
+  document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+let userStars = 4;
+
+function setStar(n) {
+  userStars = n;
+  document.querySelectorAll('.star').forEach((s, i) => {
+    s.classList.toggle('lit', i < n);
+  });
+}
+
+// Hover preview for stars
+document.addEventListener('mouseover', e => {
+  if (e.target.classList.contains('star')) {
+    const stars = e.target.parentElement.querySelectorAll('.star');
+    const idx = Array.from(stars).indexOf(e.target);
+    stars.forEach((s, i) => s.classList.toggle('lit', i <= idx));
+  }
+});
+
+document.addEventListener('mouseout', e => {
+  if (e.target.classList.contains('star')) {
+    setStar(userStars);
+  }
+});
+
+function submitReview() {
+  const review = document.getElementById('my-review').value;
+  if (!review.trim()) return;
+  alert('Review saved! ★'.repeat(userStars));
+}
+
+function addComment() {
+  const text = document.getElementById('new-comment').value.trim();
+  if (!text || !currentBook) return;
+
+  const comment = {
+    user: 'You',
+    avatar: 'YO',
+    text: text,
+    date: 'Just now'
+  };
+
+  currentBook.comments.unshift(comment);
+  const commentsList = document.getElementById('comments-list');
+  const div = document.createElement('div');
+  div.className = 'comment';
+  div.style.animation = 'fadeIn 0.4s forwards';
+  div.innerHTML = `
+    <div class="comment-header">
+      <div class="comment-avatar" style="background:linear-gradient(135deg,var(--gold-dim),var(--ash));">${comment.avatar}</div>
+      <div class="comment-author">${comment.user}</div>
+      <div class="comment-date">${comment.date}</div>
+    </div>
+    <div class="comment-text">${comment.text}</div>
+  `;
+  commentsList.prepend(div);
+  document.getElementById('new-comment').value = '';
+}
+
+// ═══════════════════════════════════════════════════
+// AI CHAT
+// ═══════════════════════════════════════════════════
+
+let chatOpen = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('ai-chat-panel').classList.toggle('open', chatOpen);
+  if (chatOpen) document.getElementById('chat-input').focus();
+}
+
+const AI_RESPONSES = {
+  keywords: {
+    'dark': ['For dark and brooding reads, I'd summon: **The Poppy War** by R.F. Kuang, **The Black Prism** by Brent Weeks, or **Name of the Wind** by Rothfuss. All carry that beautiful weight of darkness.', 'Dark fantasy calls for dark answers. Have you explored **Prince of Thorns** by Mark Lawrence? Morally grey to the bone.'],
+    'romance': ['For romantasy with a dark edge, **A Court of Mist and Fury** is essential. Also **From Blood and Ash** by Jennifer Armentrout — possessive fae, dark secrets.', 'Enemies-to-lovers is my specialty. May I suggest **Fourth Wing** if you haven\'t yet? Or **Kingdom of the Wicked** for something darker.'],
+    'vampire': ['Ah, a seeker of blood. **Interview with the Vampire** (Rice), **The Historian** (Kostova), and **Let the Right One In** are the trinity of serious vampire fiction.', 'For vampires with depth: **Carmilla** by Le Fanu predates Dracula and is more unsettling. **The Vampire Lestat** deepens Rice\'s world beautifully.'],
+    'dragon': ['Dragon-lovers are my favorite kind. **Fourth Wing**, **The Priory of the Orange Tree**, **Eragon**, and **His Majesty\'s Dragon** by Naomi Novik (military dragons — magnificent).', 'Dragons and war: the **Temeraire** series by Novik set in Napoleonic Wars. For adult dark fantasy dragons, **The Black Company** has its own ancient terrors.'],
+    'magic': ['For hard magic systems: Sanderson\'s **The Way of Kings**. For soft, lyrical magic: Rothfuss\'s **The Name of the Wind**. For dark magic: **The Poppy War** or **Circe** by Madeline Miller.'],
+    'horror': ['Gothic horror recommendations: **Shirley Jackson\'s** collected works — **We Have Always Lived in the Castle** especially. **Mexican Gothic**, **The Haunting of Hill House**, **Rebecca** by du Maurier.'],
+    'recommend': ['Tell me your mood: Do you want something that will leave you breathless, something that will haunt you, or something you will mourn finishing?', 'What was the last book you truly loved? Give me a title and I shall find its shadow-twin.'],
+    'help': ['I am the Oracle. Ask me about genres, moods, authors, or say things like: "I want something dark and romantic" or "recommend me something like Dracula."'],
+    'default': ['The shelves of Grimoire are vast. Tell me more — what feeling do you seek? What world do you wish to escape into?', 'Every reader has a book that was written for them. Describe your heart and I shall find it.', 'I sense you seek something specific. Tell me: is it adventure? Love that breaks you? Worlds darker than our own?']
+  },
+
+  getResponse(input) {
+    const lower = input.toLowerCase();
+    for (const [key, responses] of Object.entries(this.keywords)) {
+      if (key !== 'default' && lower.includes(key)) {
+        return responses[Math.floor(Math.random() * responses.length)];
+      }
+    }
+    // Check for book titles
+    for (const book of BOOKS) {
+      if (lower.includes(book.title.toLowerCase())) {
+        return `Ah, **${book.title}**. A fine choice. If you loved it, I would summon: ${BOOKS.filter(b => book.similar.includes(b.id)).map(b => `**${b.title}** by ${b.author}`).join(', ')}. Shall I tell you more about any of these?`;
+      }
+    }
+    const defaults = this.keywords.default;
+    return defaults[Math.floor(Math.random() * defaults.length)];
+  }
+};
+
+function sendChatMessage() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  const messages = document.getElementById('chat-messages');
+
+  // User message
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chat-message user';
+  userDiv.textContent = msg;
+  messages.appendChild(userDiv);
+
+  input.value = '';
+  messages.scrollTop = messages.scrollHeight;
+
+  // Thinking indicator
+  const thinking = document.createElement('div');
+  thinking.className = 'chat-thinking';
+  thinking.innerHTML = '<span></span><span></span><span></span>';
+  messages.appendChild(thinking);
+  messages.scrollTop = messages.scrollHeight;
+
+  setTimeout(() => {
+    messages.removeChild(thinking);
+    const response = AI_RESPONSES.getResponse(msg);
+    const aiDiv = document.createElement('div');
+    aiDiv.className = 'chat-message ai';
+    aiDiv.innerHTML = response.replace(/\*\*(.*?)\*\*/g, '<strong style="color:var(--gold)">$1</strong>');
+    messages.appendChild(aiDiv);
+    messages.scrollTop = messages.scrollHeight;
+  }, 900 + Math.random() * 600);
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', () => {
+  initStepIndicator();
+  renderHome();
+
+  // Hide loading
+  setTimeout(() => {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.style.display = 'none', 800);
+  }, 1200);
+});
+
+// chat on enter
+document.getElementById('chat-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendChatMessage();
+});
+</script>
+</body>
+</html>
